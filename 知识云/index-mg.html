@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>衣见中华 - 民族服饰数字试衣间</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    <style>
+        /* ================= 基础重置 ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Ma Shan Zheng', 'ZCOOL XiaoWei', 'KaiTi', 'STKaiti', serif;
+        }
+
+        body {
+            background-color: #010206;
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Canvas 星空图层 */
+        #space-canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+        }
+
+        /* ================= 1. 左上角标题 ================= */
+        .hero-text {
+            position: absolute;
+            left: 4%;
+            top: 6%;
+            z-index: 10;
+            opacity: 0;
+            animation: fadeIn 2s ease 0.5s forwards;
+        }
+
+        .hero-text h1 {
+            font-size: 48px;
+            color: #fff;
+            letter-spacing: 10px;
+            margin-bottom: 5px;
+            text-shadow: 0 0 15px rgba(100, 200, 255, 0.6);
+        }
+
+        .hero-text p {
+            font-size: 12px;
+            color: #7b9cc2;
+            letter-spacing: 8px;
+            margin-left: 3px;
+        }
+
+        /* ================= 2. 左侧极简民族介绍 ================= */
+        .intro-frame {
+            position: absolute;
+            top: 50%;
+            left: 4%;
+            transform: translateY(-50%);
+            width: 220px;
+            z-index: 10;
+            border-left: 1px solid rgba(100, 200, 255, 0.4);
+            padding-left: 15px;
+            opacity: 0;
+            animation: fadeIn 2s ease 1s forwards;
+        }
+
+        .intro-frame h2 {
+            font-size: 16px;
+            color: #a3e2ff;
+            margin-bottom: 12px;
+            letter-spacing: 2px;
+            font-weight: normal;
+        }
+
+        .intro-frame p {
+            font-size: 12px;
+            line-height: 1.8;
+            color: #6a809b;
+            text-align: justify;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+
+        /* ================= 3. 人物图片展示区 ================= */
+
+        /* 右侧大图：蒙古族 (移至居中位置) */
+        .character-main {
+            position: absolute;
+            left: 52%; /* 从58%改为52%，非常接近屏幕正中央 */
+            transform: translateX(-50%);
+            bottom: 0;
+            height: 92vh;
+            z-index: 2;
+            opacity: 0;
+            animation: fadeInGirl 2s ease 1s forwards;
+            filter: drop-shadow(0 0 20px rgba(100, 200, 255, 0.2));
+        }
+
+        /* 左下角三个Q版人物容器 */
+        .q-characters {
+            position: absolute;
+            left: 3%;
+            bottom: 3%;
+            display: flex;
+            align-items: flex-end;
+            gap: 20px;
+            z-index: 3;
+            opacity: 0;
+            animation: fadeInGirl 2s ease 1.5s forwards;
+        }
+
+        .character-q {
+            height: 15vh;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            filter: drop-shadow(0 0 10px rgba(100, 200, 255, 0.5));
+            cursor: pointer;
+        }
+
+        .character-q:hover {
+            transform: translateY(-10px) scale(1.1);
+            filter: drop-shadow(0 0 20px rgba(100, 200, 255, 0.8));
+        }
+
+        /* ================= 4. 散落的互动光点 ================= */
+        .pink-dot {
+            position: absolute;
+            width: 8px; height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow:
+                0 0 10px #fff,
+                0 0 20px #7ee0ff,
+                0 0 40px #7ee0ff;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: pulseLight 3s infinite alternate;
+            z-index: 10;
+        }
+
+        /* 雷达扫描圈 */
+        .pink-dot::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px; height: 20px;
+            border: 1px solid rgba(126, 224, 255, 0.5);
+            border-radius: 50%;
+            animation: radar 2s infinite linear;
+        }
+
+        @keyframes pulseLight {
+            0% { transform: scale(1); box-shadow: 0 0 10px #fff, 0 0 20px #7ee0ff; }
+            100% { transform: scale(1.2); box-shadow: 0 0 15px #fff, 0 0 30px #7ee0ff, 0 0 50px #7ee0ff; }
+        }
+
+        @keyframes radar {
+            0% { width: 10px; height: 10px; opacity: 1; }
+            100% { width: 50px; height: 50px; opacity: 0; }
+        }
+
+        .pink-dot:hover {
+            transform: scale(2) !important;
+            background: #fff;
+            box-shadow: 0 0 30px #fff, 0 0 60px #7ee0ff;
+        }
+
+        /* 悬浮文字标签 */
+        .pink-dot::after {
+            content: attr(data-name);
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            white-space: nowrap;
+            font-size: 15px;
+            color: #a3e2ff;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 5px #000;
+        }
+
+        .point-left .pink-dot::after { right: 150%; }
+        .point-right .pink-dot::after { left: 150%; }
+
+        .pink-dot:hover::after {
+            opacity: 1;
+        }
+
+        /* ================= 互动点位置 (精准对应人物服饰，绝不重叠) ================= */
+
+        /* 1. 头饰 (人物头部右上侧，帽檐边缘) */
+        .pos-1 { top: 14%; left: 57%; }
+        /* 2. 领口 (人物脖子左侧，交领处) */
+        .pos-2 { top: 25%; left: 46%; }
+        /* 3. 腰带 (人物腰部右侧，红绳处) */
+        .pos-3 { top: 47%; left: 55%; }
+        /* 4. 左手袖口 (人物伸出的左手手肘下方) */
+        .pos-4 { top: 53%; left: 38%; }
+        /* 5. 马靴 (人物右脚靴子外侧) */
+        .pos-5 { top: 88%; left: 57%; }
+
+        /* ================= 5. 弹窗 (全息科技风) ================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 2, 10, 0.8);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background: rgba(5, 10, 25, 0.9);
+            border: 1px solid rgba(126, 224, 255, 0.3);
+            box-shadow: 0 0 40px rgba(126, 224, 255, 0.15), inset 0 0 20px rgba(126, 224, 255, 0.1);
+            padding: 50px 40px;
+            width: 600px;
+            max-width: 90%;
+            position: relative;
+            background-image:
+                linear-gradient(rgba(126, 224, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(126, 224, 255, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: modalFadeIn 0.4s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 28px;
+            color: #7ee0ff;
+            cursor: pointer;
+            transition: color 0.3s;
+            font-family: sans-serif;
+        }
+
+        .close-btn:hover { color: #fff; text-shadow: 0 0 10px #fff; }
+
+        .modal-title {
+            font-size: 28px;
+            color: #7ee0ff;
+            margin-bottom: 25px;
+            text-align: center;
+            letter-spacing: 4px;
+            text-shadow: 0 0 15px rgba(126, 224, 255, 0.6);
+        }
+
+        .modal-desc {
+            font-size: 16px;
+            line-height: 2;
+            color: #b0c4d8;
+            font-family: 'Microsoft YaHei', sans-serif;
+            text-align: justify;
+        }
+
+        /* 底部提示 */
+        .click-hint {
+            position: absolute;
+            bottom: 3%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            color: #7ee0ff;
+            font-size: 13px;
+            letter-spacing: 3px;
+            opacity: 0;
+            animation: fadeIn 2s ease 2s forwards;
+            text-shadow: 0 0 10px rgba(126, 224, 255, 0.5);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInGirl {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="space-canvas"></canvas>
+
+    <div class="hero-text">
+        <h1>衣见中华</h1>
+        <p>民族 · 科技 · 走向未来</p>
+    </div>
+
+    <div class="intro-frame">
+        <h2>草原之花 · 蒙古族</h2>
+        <p>蒙古族被称为“马背上的民族”。为了适应严寒与骑马，传统蒙古袍多厚实宽大，右衽交领。其刺绣与镶边色彩艳丽，常借云纹花草象征吉祥，粗犷中尽显细腻。</p>
+    </div>
+
+    <!-- ================= 人物图片区域 ================= -->
+    <img src="mg.png" class="character-main" alt="蒙古族女孩">
+
+    <div class="q-characters">
+        <img src="mQ.png" class="character-q" onclick="window.location.href='index-m.html'" alt="苗族">
+        <img src="zQ.png" class="character-q" onclick="window.location.href='index-z.html'" alt="藏族">
+        <img src="wweQ.png" class="character-q" onclick="window.location.href='index-wwe.html'" alt="维吾尔族">
+    </div>
+
+    <!-- ================= 互动光点 (精准贴附在人物对应位置) ================= -->
+    <!-- 1. 头饰 -->
+    <div class="pink-dot point-right pos-1" data-name="蒙古族头饰" onclick="showModal('蒙古族头饰', '蒙古族头饰是身份与地域的象征，十分华丽。通常由银饰打造骨架，镶嵌红珊瑚、绿松石、玛瑙等珍贵宝石，造型多样。圆顶帽搭配精美的额穗和步摇，不仅防风保暖，行走时更显灵动华贵。')"></div>
+
+    <!-- 2. 领口 -->
+    <div class="pink-dot point-left pos-2" data-name="蒙古袍领口" onclick="showModal('蒙古袍领口', '蒙古袍多采用右衽交领或立领设计。领口边缘常以金丝银线刺绣出云纹、卷草纹等精美图案。立领设计贴合颈部，能有效阻挡草原寒风。')"></div>
+
+    <!-- 3. 腰带 -->
+    <div class="pink-dot point-right pos-3" data-name="蒙古族腰带" onclick="showModal('蒙古族腰带', '腰带是蒙古族服饰的灵魂所在。宽大的腰带不仅保暖护腰，更能勾勒出挺拔的身姿。在传统习俗中，腰带的系法也是未婚与已婚女性的区分标志之一。')"></div>
+
+    <!-- 4. 袖口 -->
+    <div class="pink-dot point-left pos-4" data-name="马蹄袖刺绣" onclick="showModal('马蹄袖刺绣', '为了方便骑马射箭与保暖，蒙古袍的袖口常设计成“马蹄袖”样式。袖口处常拼接不同颜色的布料，并采用彩色丝线刺绣出精美的花卉或几何图案，色彩对比强烈。')"></div>
+
+    <!-- 5. 靴子 -->
+    <div class="pink-dot point-right pos-5" data-name="蒙古马靴" onclick="showModal('蒙古马靴', '蒙古马靴不仅是御寒保暖的鞋履，更是骑马必备的装备。靴筒高及膝盖，靴头微微上翘，这种设计既方便踩踏马镫，又能减少在草原上行走的阻力。')"></div>
+
+    <div class="click-hint">✦ 侦测到服饰星轨 · 点击光点解析 ✦</div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 class="modal-title" id="modalTitle">名称</h2>
+            <p class="modal-desc" id="modalDesc">介绍...</p>
+        </div>
+    </div>
+
+    <script>
+        // ================= 核心星空引擎 =================
+        const canvas = document.getElementById('space-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+
+        function initCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            generateUniverse();
+        }
+
+        let stars = [];
+        let planetDots = [];
+        let ringDotsBack = [];
+        let ringDotsFront = [];
+        let meteors = [];
+
+        function lerpColor(c1, c2, t) {
+            return {
+                r: Math.round(c1.r + (c2.r - c1.r) * t),
+                g: Math.round(c1.g + (c2.g - c1.g) * t),
+                b: Math.round(c1.b + (c2.b - c1.b) * t)
+            };
+        }
+
+        function generateUniverse() {
+            stars = Array.from({ length: 800 }, () => ({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                size: Math.random() * 1.2 + 0.5,
+                alpha: Math.random(),
+                speed: Math.random() * 0.02 + 0.005
+            }));
+
+            planetDots = [];
+            const pX = width * 0.85;
+            const pY = height * 0.85;
+            const pR = Math.min(width, height) * 0.28;
+
+            const lx = -0.707;
+            const ly = -0.707;
+
+            for (let i = 0; i < 40000; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const rNorm = Math.sqrt(Math.random());
+                const r = rNorm * pR;
+                const x = pX + Math.cos(angle) * r;
+                const y = pY + Math.sin(angle) * r;
+
+                const nx = (x - pX) / pR;
+                const ny = (y - pY) / pR;
+
+                const dot = nx * lx + ny * ly;
+
+                const edgeFactor = Math.pow(rNorm, 6);
+                if (Math.random() > 0.5 + edgeFactor * 0.5) continue;
+
+                const lightIntensity = (dot + 1) / 2;
+
+                let colorStr;
+                if (lightIntensity > 0.7) {
+                    const t = (lightIntensity - 0.7) / 0.3;
+                    colorStr = `rgba(${180 + t*75}, ${230 + t*25}, 255, ${0.8 + t*0.2})`;
+                } else if (lightIntensity > 0.3) {
+                    const t = (lightIntensity - 0.3) / 0.4;
+                    const c = lerpColor({r:60, g:120, b:200}, {r:180, g:230, b:255}, t);
+                    colorStr = `rgba(${c.r}, ${c.g}, ${c.b}, 0.8)`;
+                } else {
+                    const t = lightIntensity / 0.3;
+                    const c = lerpColor({r:20, g:10, b:40}, {r:60, g:120, b:200}, t);
+                    colorStr = `rgba(${c.r}, ${c.g}, ${c.b}, ${0.3 + t*0.5})`;
+                }
+
+                planetDots.push({ x, y, size: Math.random() * 1.5 + 0.5, color: colorStr });
+            }
+
+            ringDotsBack = [];
+            ringDotsFront = [];
+            const ringTilt = -Math.PI / 10;
+
+            for (let i = 0; i < 20000; i++) {
+                const r = pR * (Math.random() * 0.8 + 1.3);
+                const angle = Math.random() * Math.PI * 2;
+
+                let ex = Math.cos(angle) * r;
+                let ey = Math.sin(angle) * r * 0.25;
+
+                const x = pX + ex * Math.cos(ringTilt) - ey * Math.sin(ringTilt);
+                const y = pY + ex * Math.sin(ringTilt) + ey * Math.cos(ringTilt);
+
+                const colorRand = Math.random();
+                let colorStr;
+                if (colorRand > 0.85) colorStr = `rgba(200, 100, 255, ${Math.random() * 0.6})`;
+                else if (colorRand > 0.4) colorStr = `rgba(100, 200, 255, ${Math.random() * 0.8})`;
+                else colorStr = `rgba(30, 80, 150, ${Math.random() * 0.5})`;
+
+                const dot = { x, y, size: Math.random() * 1.2 + 0.3, color: colorStr };
+
+                if (y > pY) {
+                    ringDotsFront.push(dot);
+                } else {
+                    ringDotsBack.push(dot);
+                }
+            }
+        }
+
+        function createMeteor() {
+            if (Math.random() > 0.02) return;
+            meteors.push({
+                x: width * (Math.random() * 0.5 + 0.5),
+                y: Math.random() * height * 0.4,
+                length: Math.random() * 150 + 100,
+                speed: Math.random() * 8 + 5,
+                angle: Math.PI / 4 + (Math.random() * 0.2 - 0.1),
+                alpha: 1,
+                life: 1
+            });
+        }
+
+        initCanvas();
+        window.addEventListener('resize', initCanvas);
+
+        function drawUniverse() {
+            ctx.clearRect(0, 0, width, height);
+
+            let gradient = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, width);
+            gradient.addColorStop(0, '#060914');
+            gradient.addColorStop(1, '#010206');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+
+            stars.forEach(star => {
+                star.alpha += (Math.random() - 0.5) * star.speed;
+                if (star.alpha < 0.1) star.alpha = 0.1;
+                if (star.alpha > 1) star.alpha = 1;
+                ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+                ctx.fillRect(star.x, star.y, star.size, star.size);
+            });
+
+            createMeteor();
+            for (let i = meteors.length - 1; i >= 0; i--) {
+                let m = meteors[i];
+                m.x -= Math.cos(m.angle) * m.speed;
+                m.y += Math.sin(m.angle) * m.speed;
+                m.life -= 0.01;
+
+                if (m.life <= 0 || m.x < 0 || m.y > height) {
+                    meteors.splice(i, 1);
+                    continue;
+                }
+
+                const endX = m.x + Math.cos(m.angle) * m.length;
+                const endY = m.y - Math.sin(m.angle) * m.length;
+
+                const grad = ctx.createLinearGradient(m.x, m.y, endX, endY);
+                grad.addColorStop(0, `rgba(255, 255, 255, ${m.life})`);
+                grad.addColorStop(1, 'rgba(126, 224, 255, 0)');
+
+                ctx.beginPath();
+                ctx.moveTo(m.x, m.y);
+                ctx.lineTo(endX, endY);
+                ctx.strokeStyle = grad;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+
+            ringDotsBack.forEach(dot => {
+                ctx.fillStyle = dot.color;
+                ctx.fillRect(dot.x, dot.y, dot.size, dot.size);
+            });
+
+            planetDots.forEach(dot => {
+                ctx.fillStyle = dot.color;
+                ctx.fillRect(dot.x, dot.y, dot.size, dot.size);
+            });
+
+            ringDotsFront.forEach(dot => {
+                ctx.fillStyle = dot.color;
+                ctx.fillRect(dot.x, dot.y, dot.size, dot.size);
+            });
+
+            requestAnimationFrame(drawUniverse);
+        }
+
+        drawUniverse();
+
+        // ================= 交互逻辑 =================
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDesc = document.getElementById('modalDesc');
+
+        function showModal(title, description) {
+            modalTitle.innerText = title;
+            modalDesc.innerText = description;
+            modalOverlay.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modalOverlay.style.display = 'none';
+        }
+
+        modalOverlay.addEventListener('click', function(event) {
+            if (event.target === modalOverlay) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
