@@ -1,0 +1,1443 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>衣见中华·民族邮局</title>
+  <style>
+    :root {
+      --paper: #f6f0e3;
+      --ink: #34463b;
+      --muted: #827c6a;
+      --primary: #52664f;
+      --gold: #c7a56a;
+      --line: #d8c8a9;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Noto Serif SC", "Songti SC", serif;
+      min-height: 100vh;
+      overflow: hidden;
+      zoom: 0.9
+    }
+
+    /* 背景图与遮罩 */
+    .bg-img {
+      position: fixed;
+      inset: 0;
+      /* 这里替换你的背景图 */
+      background: url("background.png") no-repeat center center;
+      background-size: cover;
+      z-index: 0;
+    }
+
+    .bg-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(246, 240, 227, 0.95) 0%, rgba(246, 240, 227, 0.8) 50%, rgba(246, 240, 227, 0.5) 100%);
+      pointer-events: none;
+    }
+
+    /* 顶部导航 */
+    .header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 30px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .brand h1 {
+      font-size: 28px;
+      font-weight: 500;
+      letter-spacing: 3px;
+    }
+
+    .brand p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 8px;
+      letter-spacing: 2px;
+    }
+
+    .btn-album {
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(8px);
+      padding: 10px 28px;
+      border-radius: 30px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-album:hover {
+      background: #fff;
+      border-color: var(--gold);
+    }
+
+    /* 主布局 */
+    .main-container {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1500px;
+      height: 100vh;
+      margin: 0 auto;
+      padding: 0 8%;
+    }
+
+    /* =========================================================
+       ★★★ 【信箱大小与位置】在这里修改 ★★★
+       ========================================================= */
+    .mailbox-area {
+      width: 700px;
+      /* 信箱宽度 */
+      height: 900px;
+      /* 信箱高度 */
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s;
+      margin-top: -130px;
+      /* 上下位置微调 */
+      margin-left: -330px;
+    }
+
+    .mailbox-area:hover {
+      transform: scale(1.02);
+    }
+
+    .mailbox-img {
+      width: 100%;
+      height: 100%;
+      /* 这里替换你的信箱贴图 */
+      background: url("xingxiang\ 2.png") no-repeat center bottom;
+      background-size: contain;
+      filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.2));
+    }
+
+    .mail-hint {
+      position: absolute;
+      top: 15%;
+      left: 80%;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 15px 25px;
+      border-radius: 12px;
+      border: 1px solid #fff;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: all 0.5s;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .mailbox-area.has-mail .mail-hint {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .mail-hint .title {
+      color: var(--primary);
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    /* 中间文字 */
+    .intro-area {
+      flex: 1;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-left: 40px;
+    }
+
+    .kicker {
+      font-size: 14px;
+      letter-spacing: 6px;
+      color: var(--gold);
+      margin-bottom: 25px;
+      font-weight: bold;
+      margin-left: -110px;
+    }
+
+    .intro-area h2 {
+      font-size: 120px;
+      font-weight: 700;
+      color: var(--ink);
+
+      /* 👇 稍微加大行高，错位排版才好看 */
+      line-height: 1.4;
+      letter-spacing: 4px;
+      margin-bottom: 30px;
+
+      /* 👇 加上这句实现斜体 */
+      font-style: italic;
+      /* 💡 小贴士：如果宋体自带的斜体看着不自然，可以注释掉上面那句，用下面的倾斜：
+         transform: skewX(-10deg);  */
+
+      /* 👇 加上这两行 */
+      position: relative;
+      left: -150px;
+      /* 负数往左移，正数往右移。你可以改这个数值调距离 */
+    }
+
+    /* 👇 让两行变成块级元素，以便单独控制 */
+    .intro-area h2 span {
+      display: block;
+      transition: transform 0.3s;
+
+
+    }
+
+    /* 👇 第一行：往左错位一点点 */
+    .intro-area h2 .title-line1 {
+      transform: translateX(-15px);
+    }
+
+    /* 👇 第二行：往右错位更多，形成阶梯感 */
+    .intro-area h2 .title-line2 {
+      transform: translateX(30px);
+    }
+
+    .intro-area p {
+      font-size: 18px;
+      color: var(--muted);
+      line-height: 2.2;
+      letter-spacing: 2px;
+      margin-bottom: 50px;
+      margin-left: -180px;
+    }
+
+    .btn-start {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 18px 50px;
+      border-radius: 40px;
+      font-size: 18px;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 10px 25px rgba(82, 102, 79, 0.3);
+    }
+
+    .btn-start:hover {
+      background: #3e4f3b;
+      transform: translateY(-3px);
+    }
+
+    /* 右侧明信片堆 */
+    .stack-area {
+      width: 500px;
+      /* 建议把宽度放大一点，让底图更明显 */
+      height: 400px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    /* 👇 新增的底图样式 */
+    .stack-bg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      /* 保证图片完整显示 */
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      /* 在卡片底层 */
+      pointer-events: none;
+      transition: transform 0.3s;
+      /* 给底图加一个浅浅的阴影 */
+      filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.15));
+    }
+
+    .stack-area:hover .stack-bg {
+      transform: scale(1.02);
+      /* 鼠标移上去时底图也微微放大 */
+    }
+
+    .stack-hint {
+      position: absolute;
+      top: -40px;
+      /* 👈 这里往上提，数值越小越靠上 */
+      left: 85%;
+      /* 👈 水平居中 */
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.95);
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-size: 15px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      animation: float 2s infinite alternate;
+      white-space: nowrap;
+      z-index: 10;
+    }
+
+    /* 修正悬浮动画，防止覆盖居中的 transform */
+    @keyframes float {
+      from {
+        transform: translate(-50%, 0);
+      }
+
+      to {
+        transform: translate(-50%, -10px);
+      }
+    }
+
+
+    .card-piece {
+      position: absolute;
+      width: 380px;
+      height: 250px;
+      border-radius: 8px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      border: 8px solid #fff;
+      /* 白边保留 */
+      background: transparent;
+      /* 取消原本的背景色 */
+      transition: all 0.4s;
+
+      /* 👇 新增两行，让里面的图片乖乖呆在白边里 */
+      overflow: hidden;
+      position: absolute;
+      /* 确保绝对定位 */
+    }
+
+    /* 👇 新增：用伪元素装图片，并施加边缘渐隐 */
+    .card-piece::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      /* 铺满内部 */
+
+      /* 图片的显示方式 */
+      background-size: cover;
+      background-position: center;
+
+      /* 👇 重点：边缘渐淡（羽化）效果。这里加 mask 不会影响外面的白边 */
+      /*-webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 100%);
+      mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 100%);*/
+
+      /* 💡 补充：如果你只是想要单纯的“半透明透出背景”，不需要边缘渐隐，
+         那就把上面两行 mask 删掉，换成：opacity: 0.5; 即可 */
+    }
+
+
+    /* 第一张图 */
+    .card-piece:nth-child(2) {
+      top: 0;
+      left: 0;
+      z-index: 3;
+      transform: rotate(-5deg);
+    }
+
+    .card-piece:nth-child(2)::before {
+      background-image: url("zang.png");
+    }
+
+    /* 第二张图 */
+    .card-piece:nth-child(3) {
+      top: 30px;
+      left: 40px;
+      z-index: 2;
+      transform: rotate(6deg);
+    }
+
+    .card-piece:nth-child(3)::before {
+      background-image: url("./miao.png");
+    }
+
+    /* 第三张图 */
+    .card-piece:nth-child(4) {
+      top: 60px;
+      left: 20px;
+      z-index: 1;
+      transform: rotate(-2deg);
+    }
+
+    .card-piece:nth-child(4)::before {
+      background-image: url("mong.png");
+    }
+
+    /* 👇 新增的底图样式 */
+    .stack-bg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      /* 将底图居中 */
+      transform: translate(-50%, -50%);
+
+      /* 宽高可以调大一点，让底图像个垫子一样铺开，溢出边界一点更好看 */
+      width: 210%;
+      height: 170%;
+      object-fit: contain;
+
+      /* 关键：层级设为 0，确保它在三张卡片 (z-index: 1,2,3) 的下方 */
+      z-index: 0;
+      pointer-events: none;
+      /* 防止底图遮挡鼠标点击 */
+
+      /* 稍微加一点阴影让它有厚度感 */
+      filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.15));
+
+      /* 鼠标悬停时，底图也微微放大 */
+      transition: transform 0.4s ease;
+
+      /* 👇 新增：边缘虚化代码 👇 */
+      /* 设置四周边缘透明，中间不透明的渐变遮罩 */
+      -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 75%);
+      mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 75%);
+    }
+
+    .stack-area:hover .stack-bg {
+      transform: translate(-50%, -50%) scale(1.03);
+    }
+
+    .stack-area:hover .card-piece:nth-child(2) {
+      transform: translateY(-10px) rotate(-8deg);
+    }
+
+    .stack-area:hover .card-piece:nth-child(3) {
+      transform: translateY(-5px) rotate(10deg);
+    }
+
+    /* =========================================================
+       弹窗通用样式
+       ========================================================= */
+    .backdrop {
+      position: fixed;
+      inset: 0;
+      /* 改成浅米色半透明，与信纸颜色融合 */
+      background: rgba(246, 240, 227, 0.65);
+      /* 增强毛玻璃模糊，让底图变柔和 */
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 16px;
+    }
+
+    .backdrop.show {
+      display: flex;
+    }
+
+    .modal {
+      width: min(900px, 100%);
+      max-height: 92vh;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fdfbf7;
+      box-shadow: 0 30px 100px rgba(0, 0, 0, 0.3);
+      position: relative;
+      padding: 30px;
+    }
+
+    .close {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      border: none;
+      background: transparent;
+      font-size: 24px;
+      cursor: pointer;
+      color: #aaa;
+    }
+
+    /* =========================================================
+       选明信片弹窗 (复刻你给的代码)
+       ========================================================= */
+    .modal h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .modal p.subline {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .choosegrid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+
+    .pick {
+      border: 1px solid #d7c39e;
+      background: #fffbf1;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+
+
+    /* 👇 新增：真实图片的样式 */
+    .pick img {
+      width: 100%;
+      height: 160px;
+      /* 和原来的高度保持一致 */
+      object-fit: cover;
+      /* 保证图片不变形 */
+      border-radius: 4px;
+      border: 1px solid #eee;
+      display: block;
+    }
+
+
+
+
+
+    /* 用 CSS 绘制的明信片样式 (原代码) */
+    .art {
+      height: 160px;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(#cbd9d0 0 30%, #f0dfbc 30% 100%);
+      border-radius: 4px;
+
+      /* 👇 新增：边缘渐淡 */
+      -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
+      mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    .art:before {
+      content: "";
+      position: absolute;
+      left: -5%;
+      right: -5%;
+      bottom: 25%;
+      height: 47%;
+      background: linear-gradient(145deg, transparent 25%, #8b9d83 25.5% 43%, transparent 43.5%), linear-gradient(35deg, transparent 20%, #b4b998 20.5% 49%, transparent 49.5%), linear-gradient(150deg, transparent 48%, #718c76 48.5% 66%, transparent 66.5%);
+    }
+
+    .art:after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 28%;
+      background: linear-gradient(#d7b985, #eee0bd);
+    }
+
+    .figure {
+      position: absolute;
+      bottom: 17%;
+      left: 38%;
+      width: 17px;
+      height: 45px;
+      border-radius: 10px 10px 3px 3px;
+      background: #b85e48;
+      z-index: 2;
+      box-shadow: 14px 4px 0 -2px #405e67;
+    }
+
+    .figure:before {
+      content: "";
+      position: absolute;
+      top: -12px;
+      left: 2px;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #d4a77e;
+      border: 2px solid #394c42;
+    }
+
+    .figtitle {
+      position: absolute;
+      z-index: 3;
+      top: 5px;
+      left: 5px;
+      writing-mode: vertical-rl;
+      font-size: 10px;
+      color: #76513b;
+    }
+
+    .stamp {
+      position: absolute;
+      right: 4px;
+      top: 4px;
+      border: 1px solid #bd805d;
+      background: #f8e7c9;
+      color: #a65d4a;
+      font-size: 10px;
+      padding: 3px;
+      z-index: 3;
+    }
+
+    .pick span {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+
+    /* =========================================================
+       书写弹窗与巨型钢笔 (参考图2)
+       ========================================================= */
+    .write-modal {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      width: 100%;
+      max-width: 1300px;
+      position: relative;
+    }
+
+    /* 信纸 */
+    .paper-card {
+      width: 800px;
+      height: 550px;
+      /* 你的背景图 */
+      background: #fdfbf7 url("./xin.png") no-repeat center/cover;
+      border-radius: 16px;
+      /* 稍微加大圆角 */
+      /* 使用三层柔和阴影代替生硬的黑影 */
+      box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.05),
+        0 30px 60px rgba(0, 0, 0, 0.08),
+        0 50px 100px rgba(0, 0, 0, 0.12);
+      /* 如果你的图片自带一圈硬边，可以加一个细小的边框遮住它 */
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      padding: 50px;
+      position: relative;
+      margin-left: 150px;
+      /* 给左边钢笔留空间 */
+
+      /* 添加微微的缩放动画，打开更自然 */
+      transform: scale(0.95);
+      transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+
+      /* 👇 新增：边缘渐淡（把中心留得更大，免得字看不清） */
+      -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
+      mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    /* 弹窗显示时，信纸放大到正常比例 */
+    .backdrop.show .paper-card {
+      transform: scale(1);
+    }
+
+    .paper-card textarea {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: transparent;
+      resize: none;
+      font-family: inherit;
+      font-size: 22px;
+      line-height: 2.2;
+      color: var(--ink);
+      outline: none;
+    }
+
+    .char-count {
+      position: absolute;
+      bottom: 30px;
+      right: 40px;
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    /* =========================================================
+       ★★★ 【钢笔大小与位置】在这里修改 ★★★
+       ========================================================= */
+    .pen-container {
+      position: absolute;
+      left: 5%;
+      /* 初始状态：靠屏幕左侧 */
+      top: 20%;
+      /* 初始状态：垂直居中 */
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      z-index: 60;
+      cursor: pointer;
+      /* 让容器平移变得平滑 */
+      transition: left 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
+        top 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .pen-img {
+      width: 600px;
+      /* 钢笔宽度 */
+      height: 1100px;
+      /* 钢笔高度 */
+      background: url("pen.png") no-repeat center bottom;
+      background-size: contain;
+      /* 默认状态：倾斜伸入 */
+      transform: rotate(15deg);
+      /* 让笔身旋转变得平滑 */
+      transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      filter: drop-shadow(10px 15px 15px rgba(0, 0, 0, 0.3));
+    }
+
+    /* 点击后：钢笔飞向信纸写字的姿态 */
+    .pen-container.writing {
+      left: 75%;
+      /* 🎯 目标位置：水平飞向中间偏左（对应信纸位置） */
+      top: -35%;
+      /* 🎯 目标位置：稍微往上飞一点（对应信纸高度） */
+    }
+
+    .pen-container.writing .pen-img {
+      transform: rotate(45deg);
+      /* 变成写字角度 */
+    }
+
+    /* 提示文字独立定位 */
+    .pen-hint {
+      position: absolute;
+      left: 5%;
+      /* 初始位置在左边钢笔旁边 */
+      top: 10%;
+      z-index: 70;
+      background: #fff;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--gold);
+      white-space: nowrap;
+      /* 添加平滑移动动画 */
+      transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    /* 当点击钢笔后，提示字飞到屏幕正上方，不遮挡信纸 */
+    .pen-hint.active {
+      left: 5%;
+      top: 10%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 10px 30px rgba(82, 102, 79, 0.4);
+    }
+
+    /* 倒计时弹窗 */
+    .wait-box {
+      text-align: center;
+      padding: 50px;
+    }
+
+    .wait-box h3 {
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    #seconds {
+      font-size: 60px;
+      color: var(--gold);
+      font-weight: bold;
+      margin: 20px 0;
+    }
+
+    /* 回信弹窗 */
+    .reply-card {
+      width: 750px;
+      height: 520px;
+
+      /* 👇 把原来的 url 删掉，换成这行半透明白色底 */
+      background: rgba(255, 252, 245, 0.85);
+
+      border-radius: 8px;
+      padding: 60px;
+      position: relative;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      /* 防止里面的背景图溢出圆角 */
+    }
+
+    /* 👇 新增：专门用来放底图的层 */
+    .reply-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      /* 这里填入你的底图路径 */
+      background: url("xin.png") no-repeat center/cover;
+
+      /* 👇 核心代码：调整这里的数值！ */
+      /* 0 是全透明，1 是原图。0.3 ~ 0.5 之间能隐约看到山水，且不干扰文字 */
+      opacity: 0.4;
+
+      z-index: 0;
+      /* 放在底层 */
+    }
+
+    .reply-text {
+      position: relative;
+      z-index: 1;
+      /* 确保字在上面 */
+      font-size: 20px;
+      line-height: 2.2;
+      white-space: pre-wrap;
+      margin-bottom: 40px;
+      color: #2c3e2e;
+      /* 字体颜色可以稍微加深一点 */
+
+      /* 💡 进阶神技：给文字加一圈极淡的白色发光，不管背景多花，字都能看清 */
+      text-shadow: 0 2px 10px rgba(255, 255, 255, 0.9), 0 0 4px rgba(255, 255, 255, 1);
+    }
+
+    .reply-sign {
+      position: relative;
+      z-index: 1;
+      /* 确保字在上面 */
+      text-align: right;
+      font-size: 18px;
+      color: var(--muted);
+    }
+
+
+
+    /* ===== 我的明信片：只修改相册区域 ===== */
+
+    .album-modal {
+      width: min(1050px, 94vw);
+      height: min(760px, 88vh);
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .album-subline {
+      margin: 8px 0 24px;
+      color: #918775;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 28px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #e7ddca;
+      padding-bottom: 13px;
+      flex-shrink: 0;
+    }
+
+    .tab {
+      position: relative;
+      border: none;
+      background: none;
+      font-size: 14px;
+      cursor: pointer;
+      color: #8b8373;
+      padding: 4px 0;
+    }
+
+    .tab.active {
+      color: #52664f;
+      font-weight: bold;
+    }
+
+    .tab.active::after {
+      content: "";
+      position: absolute;
+      bottom: -14px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #52664f;
+    }
+
+    /* 卡片自动排列，保留合理的卡片宽度 */
+    .albumgrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill,
+          minmax(min(100%, 270px), 1fr));
+      gap: 18px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      flex: 1;
+      min-height: 0;
+      align-content: start;
+      padding: 2px 3px 10px;
+    }
+
+    /* 每封明信片 */
+    .albumitem {
+      min-width: 0;
+      width: 100%;
+      appearance: none;
+      text-align: left;
+      font: inherit;
+      color: #655e50;
+      background: rgba(255, 253, 247, 0.94);
+      border: 1px solid #e6d9c3;
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      cursor: pointer;
+      box-shadow: 0 3px 12px rgba(75, 61, 40, 0.035);
+      transition:
+        transform .22s ease,
+        box-shadow .22s ease,
+        border-color .22s ease;
+    }
+
+    .albumitem:hover {
+      transform: translateY(-3px);
+      border-color: #ccb58b;
+      box-shadow: 0 9px 22px rgba(75, 61, 40, 0.09);
+    }
+
+    /* 明信片图片 */
+    .albumitem>img {
+      width: 100%;
+      height: 172px;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 5px;
+      background: #eee7d9;
+    }
+
+    /* 寄出 / 收到的标签 */
+    .albumitem .tag {
+      display: inline-flex;
+      align-self: flex-start;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      color: #fff;
+      background: #52664f;
+    }
+
+    .albumitem .tag.recv {
+      background: #b99a67;
+    }
+
+    /* 信件内容：列表中显示摘要 */
+    .albumitem .text {
+      color: #655e50;
+      font-size: 13px;
+      line-height: 1.9;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 4;
+      line-clamp: 4;
+      overflow: hidden;
+    }
+
+    /* 日期 */
+    .albumitem .time {
+      margin-top: auto;
+      padding-top: 8px;
+      color: #a19682;
+      font-size: 11px;
+      text-align: right;
+    }
+
+    /* 点击卡片阅读全文 */
+    .albumitem .open-hint {
+      color: #8a957f;
+      font-size: 10px;
+    }
+
+    /* 空相册 */
+    .album-empty {
+      grid-column: 1 / -1;
+      padding: 55px 20px;
+      text-align: center;
+      color: #948a77;
+      font-size: 13px;
+      line-height: 2;
+    }
+
+    @media (max-width: 600px) {
+      .album-modal {
+        width: 94vw;
+        height: 88vh;
+        padding: 22px 16px;
+      }
+
+      .albumgrid {
+        grid-template-columns: 1fr;
+        gap: 13px;
+      }
+
+      .albumitem>img {
+        height: 190px;
+      }
+
+      .tabs {
+        gap: 19px;
+      }
+    }
+
+    /* 没有记录时的提示 */
+
+    .empty-album {
+      grid-column: 1 / -1;
+      padding: 50px 20px;
+
+      color: #918672;
+      text-align: center;
+      line-height: 2;
+      font-size: 13px;
+    }
+
+    /* 提示 Toast */
+    .toast {
+      position: fixed;
+      top: 40px;
+      left: 50%;
+      transform: translate(-50%, -20px);
+      background: var(--primary);
+      color: #fff;
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-size: 15px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s;
+      z-index: 99;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg-img"></div>
+
+  <header class="header">
+    <div class="brand">
+      <h1>写一张明信片 · 让文化被看见</h1>
+      <p>写下你的话，让它穿越山海，去遇见另一个你。</p>
+    </div>
+    <button class="btn-album" id="btnAlbum">我的明信片</button>
+  </header>
+
+  <!-- 主页面 -->
+  <div class="main-container">
+    <!-- 左侧信箱 -->
+    <div class="mailbox-area" id="mailbox">
+      <div class="mailbox-img"></div>
+      <div class="mail-hint">
+        <div>
+          <div class="title" id="hintTitle">有新信了</div>
+          <div class="desc">点击查看回信</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 中间文字 -->
+    <div class="intro-area">
+      <div class="kicker">A POSTCARD JOURNEY<br>+——民族温度传递计划——+</div>
+      <h2>
+        <span class="title-line1">纸情</span>
+        <span class="title-line2">温度</span>
+      </h2>
+      <p>✎—-—+—-—<br> 挑选一张喜欢的明信片，<br> 写下你想说的话。<br> 让一次小小的寄信，<br> 成为认识不同民族文化的温柔开始。</p>
+      <button class="btn-start" id="btnStart">挑选一张明信片 ↗</button>
+    </div>
+
+    <!-- 右侧卡片 -->
+    <div class="stack-area" id="stack">
+      <div class="stack-hint">点击明信片开始写信</div>
+
+      <div class="card-piece"></div>
+      <div class="card-piece"></div>
+      <div class="card-piece"></div>
+      <img src="./ditu.png" class="stack-bg" alt="明信片底座">
+    </div>
+  </div>
+
+  <!-- 弹窗：挑选明信片 -->
+  <div class="backdrop" id="choose">
+    <div class="modal">
+      <button class="close" onclick="closeModal('choose')">×</button>
+      <h3>选一张明信片</h3>
+      <p class="subline">挑选一张你喜欢的画面，让这次相遇从这里开始。</p>
+      <div class="choosegrid" id="choosegrid"></div>
+    </div>
+  </div>
+
+  <!-- 弹窗：书写 -->
+  <div class="backdrop" id="write">
+    <div class="write-modal">
+      <!-- 巨型钢笔（只留笔） -->
+      <div class="pen-container" id="penContainer">
+        <div class="pen-img"></div>
+      </div>
+
+      <!-- 提示文字单独拿出来了！ -->
+      <div class="pen-hint" id="penHint">点击钢笔~开始书写</div>
+
+      <!-- 信纸 -->
+      <div class="paper-card">
+        <button class="close" style="position: absolute; top: 20px; right: 20px; z-index: 10; color: #666;"
+          onclick="closeModal('write')">×</button>
+        <textarea id="userMessage" maxlength="200" placeholder="在此写下你对少数民族朋友的祝福……"></textarea>
+        <div class="char-count"><span id="count">0</span> / 200</div>
+      </div>
+    </div>
+  </div>
+  <!-- 弹窗：倒计时 -->
+  <div class="backdrop" id="wait">
+    <div class="modal wait-box">
+      <h3>明信片正在旅途中</h3>
+      <p class="subline">信件已经寄出，远方的朋友正在为你准备回信。</p>
+      <div id="seconds">5</div>
+      <p>正在寄送中……</p>
+    </div>
+  </div>
+
+  <!-- 弹窗：回信 -->
+  <div class="backdrop" id="reply">
+    <div class="reply-card">
+      <button class="close" onclick="closeModal('reply')">×</button>
+      <div class="reply-text" id="replytext"></div>
+      <div class="reply-sign" id="sign"></div>
+    </div>
+  </div>
+
+  <!-- 弹窗：相册 -->
+  <div class="backdrop" id="album">
+    <div class="modal album-modal">
+      <button class="close" onclick="closeModal('album')">×</button>
+
+      <h3>我的明信片</h3>
+      <p class="album-subline">
+        收藏每一次相遇，也收藏每一封回信。
+      </p>
+      <div class="tabs">
+        <button class="tab active" data-tab="all">全部</button>
+        <button class="tab" data-tab="sent">我寄出的</button>
+        <button class="tab" data-tab="received">收到的回信</button>
+      </div>
+      <div class="albumgrid" id="albumgrid"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // 数据
+    const cards = [
+      { title: "天边草原", img: "mong.png", color: "#849780" }, // 第一张：蒙古族
+      { title: "苗岭银歌", img: "miao.png", color: "#c58a67" },      // 第二张：苗族
+      { title: "丝路花语", img: "wei.png", color: "#657f7a" },   // 第三张：维吾尔族
+      { title: "绿域梵音", img: "zang.png", color: "#b28b59" }    // 第四张：藏族
+    ];
+    const replies = [
+      // —— 原有的 3 条 ——
+      { text: "亲爱的朋友：\n\n你的明信片我收到了。\n谢谢你用这样的方式认识我。\n希望你在探索不同文化的旅途中，一直保有好奇，也收获温暖。\n\n愿你所见皆美好。", sign: "—— 来自贵州的朋友" },
+      { text: "你好呀！\n\n很开心收到你的问候。\n每一件衣裳、每一种手艺，都藏着人们对生活的热爱。\n希望有一天，我们能分享更多关于家乡与传统的故事。", sign: "—— 来自云南的朋友" },
+      { text: "远方的朋友，你好：\n\n谢谢你愿意停下来，看看不同地方的人们如何生活。\n愿这张小小的明信片，让我们的距离近一点。", sign: "—— 来自广西的朋友" },
+
+      // —— 新增的 5 条 ——
+      { text: "扎西德勒！\n\n你的来信跨越了千山万水来到了雪域高原。\n这里的阳光很暖，经幡在风中飞扬。\n愿这份来自高原的祝福，能护佑你岁岁平安，万事胜意。", sign: "—— 来自西藏的朋友" },
+      { text: "远方的朋友，你好！\n\n很高兴能收到你的明信片。\n此刻我们这里正飘着瓜果的甜香，人们在葡萄架下跳着舞。\n如果有一天你来到这里，我一定请你吃最甜的哈密瓜！", sign: "—— 来自新疆的朋友" },
+      { text: "见字如面：\n\n收到你的来信啦。\n我们这里的苗岭上开满了花，姑娘们身上的银饰叮当响。\n希望你也像这山间的风一样，自由、快乐、无拘无束。", sign: "—— 来自贵州的朋友" },
+      { text: "朋友，你好：\n\n在辽阔的草原上读你的信，是一件很浪漫的事。\n马头琴的旋律在风中飘荡，夜晚的星空格外明亮。\n愿你拥有一颗像草原一样宽广、自由的心。", sign: "—— 来自内蒙古的朋友" },
+      { text: "嗨，远方的朋友：\n\n谢谢你的问候。\n这里的苍山洱海很美，时光也很慢。\n我们一针一线地扎染出美丽的图案，就像你一字一句写下这封信一样用心。\n祝好！", sign: "—— 来自云南的朋友" }
+    ];
+
+    let selected = 0, sent = [], received = [], tab = "all", latest = null;
+    let state = 'initial'; // 控制钢笔的点击状态
+
+    const $ = id => document.getElementById(id);
+
+    // 生成假明信片 HTML
+    function art(c, i) {
+      return `<div class="art" style="background:linear-gradient(${155 + i * 13}deg,${c.color}66,#f1dfbd 65%,#d5d8c3)">
+                <span class="figtitle">${c.title}</span>
+                <span class="stamp">邮</span>
+                <span class="figure" style="background:${c.color}"></span>
+              </div>`;
+    }
+
+    function closeModal(id) {
+      $(id).classList.remove("show");
+      // 如果是关闭书写弹窗，重置状态
+      if (id === 'write') {
+        $('penContainer').classList.remove('writing');
+        $('penHint').textContent = "点击钢笔~开始书写";
+        state = 'initial';
+      }
+    }
+    function openModal(id) { $(id).classList.add("show"); }
+
+    function toast(t) {
+      $("toast").textContent = t;
+      $("toast").classList.add("show");
+      setTimeout(() => $("toast").classList.remove("show"), 2300);
+    }
+
+    // 1. 打开选图弹窗
+    function openChoose() {
+      $("choosegrid").innerHTML = cards.map((c, i) => `
+        <button class="pick" onclick="pick(${i})">
+          <!-- 👇 这里直接使用真实图片 -->
+          <img src="${c.img}" alt="${c.title}">
+          <span>${c.title}</span>
+        </button>
+      `).join("");
+      openModal("choose");
+    }
+
+    $("btnStart").onclick = openChoose;
+    $("stack").onclick = openChoose;
+
+    // 2. 选中明信片，进入书写
+    function pick(i) {
+      selected = i;
+      closeModal("choose");
+      openModal("write");
+
+      // 重置书写状态
+      $("userMessage").value = "";
+      $("count").textContent = "0";
+      state = 'initial';
+      $('penContainer').classList.remove('writing');
+      $('penHint').textContent = "点击钢笔~开始书写";
+    }
+
+    // 字数统计
+    $("userMessage").oninput = () => $("count").textContent = $("userMessage").value.length;
+
+    // 3. 钢笔交互逻辑
+    $("penContainer").addEventListener('click', () => {
+      if (state === 'initial') {
+        // 第一次点击：钢笔落下
+        $('penContainer').classList.add('writing');
+        $('penHint').textContent = "点击钢笔~寄出信件";
+        $('userMessage').focus();
+        state = 'writing';
+      } else if (state === 'writing') {
+        // 第二次点击：寄出
+        if ($("userMessage").value.trim() === '') {
+          toast("先写下一句想说的话吧");
+          $("userMessage").focus();
+          return;
+        }
+        sendMail();
+      }
+    });
+
+    // 4. 寄出与倒计时
+    function sendMail() {
+      const message = $("userMessage").value.trim();
+      sent.unshift({ card: cards[selected], message, date: new Date().toLocaleDateString(), type: "sent" });
+
+      closeModal("write");
+      openModal("wait");
+
+      let n = 5;
+      $("seconds").textContent = n;
+
+      const t = setInterval(() => {
+        n--;
+        $("seconds").textContent = n;
+        if (n <= 0) {
+          clearInterval(t);
+          closeModal("wait");
+
+          // 随机生成回信
+          latest = replies[Math.floor(Math.random() * replies.length)];
+          received.unshift({ card: cards[Math.floor(Math.random() * cards.length)], ...latest, date: new Date().toLocaleDateString(), type: "received" });
+
+          // 信箱闪烁
+          $("mailbox").classList.add("has-mail");
+          $("hintTitle").textContent = "叮咚！有新信了";
+
+          // 直接弹出回信
+          $("replytext").textContent = latest.text;
+          $("sign").textContent = latest.sign;
+          openModal("reply");
+          toast("叮咚！你收到一封回信");
+        }
+      }, 1000);
+    }
+
+    // 5. 点击信箱查看回信
+    $("mailbox").onclick = () => {
+      if (received.length) {
+        const r = received[0];
+        $("replytext").textContent = r.text;
+        $("sign").textContent = r.sign;
+        openModal("reply");
+        $("mailbox").classList.remove("has-mail");
+      } else {
+        toast("信箱还没有新回信，先寄出一张明信片吧");
+      }
+    };
+
+    // 6. 相册功能
+    $("btnAlbum").onclick = () => {
+      renderAlbum();
+      openModal("album");
+    };
+
+    document.querySelectorAll('.tab').forEach(b => {
+      b.onclick = (e) => {
+        tab = e.target.dataset.tab;
+        document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+        e.target.classList.add('active');
+        renderAlbum();
+      };
+    });
+
+    /* ===== 相册当前显示的数据 ===== */
+    let albumCurrentItems = [];
+
+    /* 对信件内容进行转义，避免文字被当作 HTML */
+    function escapeAlbumText(value) {
+      return String(value ?? "").replace(/[&<>"']/g, ch => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[ch]);
+    }
+
+    /* ===== 渲染我的明信片 ===== */
+    function renderAlbum() {
+      let items = [...sent, ...received];
+
+      if (tab === "sent") {
+        items = sent;
+      } else if (tab === "received") {
+        items = received;
+      }
+
+      albumCurrentItems = items;
+
+      const grid = $("albumgrid");
+
+      if (items.length === 0) {
+        grid.innerHTML = `
+      <div class="album-empty">
+        这里还空着。<br>
+        寄出第一张明信片，开启一次远方的相遇吧。
+      </div>
+    `;
+        return;
+      }
+
+      grid.innerHTML = items.map((item, index) => {
+        const isReceived = item.type === "received";
+        const image = item.card?.img || "";
+        const title = item.card?.title ||
+          (isReceived ? "来自远方的回信" : "我的明信片");
+
+        const content = isReceived
+          ? (item.text || "")
+          : (item.message || "");
+
+        const date = item.date || "";
+
+        return `
+      <article
+        class="albumitem"
+        role="button"
+        tabindex="0"
+        aria-label="查看${escapeAlbumText(title)}全文"
+        onclick="openAlbumItem(${index})"
+        onkeydown="if(event.key==='Enter'||event.key===' '){
+          event.preventDefault();
+          openAlbumItem(${index});
+        }"
+      >
+        <img
+          src="${escapeAlbumText(image)}"
+          alt="${escapeAlbumText(title)}"
+          onerror="this.style.display='none'"
+        >
+
+        <span class="tag ${isReceived ? "recv" : ""}">
+          ${isReceived ? "收到的回信" : "我寄出的"}
+        </span>
+
+        <div class="text">${escapeAlbumText(content)}</div>
+
+        <div class="open-hint">点击查看全文 ↗</div>
+
+        <div class="time">${escapeAlbumText(date)}</div>
+      </article>
+    `;
+      }).join("");
+    }
+
+    /* ===== 点击单张卡片，打开完整信件 ===== */
+    function openAlbumItem(index) {
+      const item = albumCurrentItems[index];
+
+      if (!item) return;
+
+      const isReceived = item.type === "received";
+
+      $("replytext").textContent = isReceived
+        ? (item.text || "")
+        : (item.message || "");
+
+      $("sign").textContent = isReceived
+        ? (item.sign || "—— 来自远方的朋友")
+        : "—— 我寄出的明信片";
+
+      /* 关闭相册，使用原有回信弹窗显示全文 */
+      closeModal("album");
+      openModal("reply");
+    }
+
+    grid.innerHTML = a.map(x => `
+        <div class="albumitem">
+          <div class="tag ${x.type === 'received' ? 'recv' : ''}">${x.type === 'sent' ? '我寄出的' : '收到的回信'}</div>
+          <div class="text">${(x.message || x.text || "").replace(/\n/g, '<br>')}</div>
+          <div class="time">${x.date}</div>
+        </div>
+      `).join('');
+    // 👈 结束 renderAlbum 函数的大括号，只保留这一个！
+
+  </script>
+</body>
+
+</html>
