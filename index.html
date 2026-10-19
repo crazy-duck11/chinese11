@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>衣见中华</title>
+  <!-- 引入 FontAwesome 图标库 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- 引入思源宋体 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700;900&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0d1219;
+      --gold: #d8c8b0;
+      --text-main: #ffffff;
+      --text-sub: #a0aab5;
+      --card-bg: #151c26;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Serif SC', 'STSong', serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 1440px;
+      background-color: var(--bg-color);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+    }
+
+    /* ================= 顶部导航栏 ================= */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 40px;
+      background: rgba(13, 18, 25, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .logo span {
+      font-size: 12px;
+      color: var(--gold);
+      margin-left: 2px;
+      margin-top: 2px;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 48px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: var(--text-sub);
+      font-size: 16px;
+      letter-spacing: 2px;
+      transition: all 0.3s ease;
+      position: relative;
+      padding-bottom: 8px;
+    }
+
+    nav ul li a:hover,
+    nav ul li a.active {
+      color: var(--text-main);
+    }
+
+    nav ul li a.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 24px;
+      height: 2px;
+      background-color: var(--text-main);
+    }
+
+    /* 将用户头像也改为链接 */
+    .user-avatar {
+      display: block;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: border-color 0.3s;
+    }
+
+    .user-avatar:hover {
+      border-color: var(--gold);
+    }
+
+    .user-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ================= 主视觉区域 (Hero) ================= */
+    .hero {
+      position: relative;
+      height: 580px;
+      display: flex;
+      align-items: center;
+      padding: 0 80px;
+      background: url("./首页/扉页.png") no-repeat center center;
+      background-size: cover;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, #0d1219 0%, rgba(13, 18, 25, 0.8) 35%, rgba(13, 18, 25, 0.1) 70%, transparent 100%);
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      margin-top: 20px;
+    }
+
+    .hero-title {
+      font-size: 90px;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: 6px;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-title .line-1 {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .hero-title .line-1 i {
+      font-size: 28px;
+      color: var(--gold);
+      opacity: 0.8;
+    }
+
+    .hero-subtitle {
+      font-size: 16px;
+      color: var(--text-main);
+      letter-spacing: 4px;
+      margin-bottom: 48px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-weight: 400;
+    }
+
+    .hero-subtitle::before,
+    .hero-subtitle::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* 将按钮改为 a 标签以支持跳转 */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 10px 36px;
+      border: 1px solid rgba(216, 200, 176, 0.6);
+      background: transparent;
+      color: var(--gold);
+      font-size: 16px;
+      letter-spacing: 2px;
+      border-radius: 40px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      font-family: 'Noto Serif SC', serif;
+      text-decoration: none;
+      /* 去除下划线 */
+    }
+
+    .btn-primary:hover {
+      background: var(--gold);
+      color: var(--bg-color);
+      border-color: var(--gold);
+    }
+
+    /* ================= 音乐播放器 ================= */
+    .music-player {
+      position: absolute;
+      right: 40px;
+      bottom: 40px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 24px;
+      border-radius: 12px;
+      background: rgba(13, 18, 25, 0.4);
+      backdrop-filter: blur(8px);
+    }
+
+    .vinyl-record {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: url("./首页/唱片.png") no-repeat center center;
+      background-size: cover;
+      position: relative;
+      animation: spin 12s linear infinite;
+    }
+
+    .vinyl-record::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 14px;
+      height: 14px;
+      background-color: var(--bg-color);
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    @keyframes spin {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .vinyl-record.is-paused {
+      animation-play-state: paused;
+    }
+
+    .music-info {
+      display: flex;
+      flex-direction: column;
+      min-width: 100px;
+    }
+
+    .music-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+
+    .music-artist {
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    .music-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: var(--text-main);
+    }
+
+    .music-controls i {
+      cursor: pointer;
+      font-size: 12px;
+      transition: color 0.3s;
+    }
+
+    .music-controls i:hover {
+      color: var(--gold);
+    }
+
+    .play-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .play-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* ================= 底部功能卡片区域 ================= */
+    .features-section {
+      padding: 24px 40px 40px 40px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      background: var(--bg-color);
+    }
+
+    /* 将卡片改为 a 标签以便跳转 */
+    .feature-card {
+      background-color: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 24px;
+      text-decoration: none;
+      color: inherit;
+      /* 去除a标签默认样式 */
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.5;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 1;
+    }
+
+    .feature-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 70%;
+      background: linear-gradient(to top, rgba(13, 18, 25, 0.95) 0%, rgba(13, 18, 25, 0.6) 50%, transparent 100%);
+      z-index: 2;
+    }
+
+    .feature-card:hover::before {
+      opacity: 0.7;
+      transform: scale(1.05);
+    }
+
+    .feature-card:hover {
+      border-color: rgba(216, 200, 176, 0.4);
+    }
+
+    .card-1::before {
+      background-image: url("./首页/换装.png");
+    }
+
+    .card-2::before {
+      background-image: url("./首页/明信片.png");
+    }
+
+    .card-3::before {
+      background-image: url("./首页/知识云.png");
+    }
+
+    .card-4::before {
+      background-image: url("./首页/我的.png");
+    }
+
+    .card-content {
+      position: relative;
+      z-index: 3;
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+
+    .card-desc {
+      font-size: 12px;
+      color: var(--text-sub);
+      letter-spacing: 1px;
+    }
+
+    .card-arrow {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      z-index: 3;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--text-main);
+      font-size: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover .card-arrow {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--bg-color);
+    }
+
+    @media (max-width: 1200px) {
+      .hero-title {
+        font-size: 54px;
+      }
+
+      nav ul {
+        gap: 30px;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .features-section {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero {
+        height: 500px;
+        padding: 0 40px;
+      }
+
+      .hero-title {
+        font-size: 42px;
+      }
+
+      .music-player {
+        bottom: 20px;
+        right: 20px;
+        transform: scale(0.9);
+        transform-origin: bottom right;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="app-container">
+
+    <!-- ================= 顶部导航栏 ================= -->
+    <header>
+      <div class="logo">衣见中华<span>❀</span></div>
+      <nav>
+        <ul>
+          <!-- 【跳转链接 1】首页 -->
+          <li><a href="./index.html" class="active">首页</a></li>
+          <!-- 【跳转链接 2】换装页面 -->
+          <li><!-- 在你的按钮或链接上加 target="_blank" -->
+            <a href="./装饰/outfit.html" target="_blank" class="btn-album">华美换装</a>
+          </li>
+          <!-- 【跳转链接 3】明信片页面 -->
+          <li><!-- 在你的按钮或链接上加 target="_blank" -->
+            <a href="./明信片/mxp2.html" target="_blank" class="btn-album">纸情传递</a>
+          </li>
+          <!-- 【跳转链接 4】知识云页面 -->
+          <li><!-- 在你的按钮或链接上加 target="_blank" -->
+            <a href="./知识云/index-m.html" target="_blank" class="btn-album">星海民族</a>
+          </li>
+          <!-- 【跳转链接 5】我的装扮页面 -->
+          <li><!-- 在你的按钮或链接上加 target="_blank" -->
+            <a href="./装饰/record.html" target="_blank" class="btn-album">我的装扮</a>
+          </li>
+        </ul>
+      </nav>
+      <!-- 【跳转链接 6】用户个人中心 (点击头像跳转) -->
+      <a href="./装饰/record.html" target="_blank" class="user-avatar">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100"
+          alt="User">
+      </a>
+    </header>
+
+    <!-- ================= 主视觉区域 ================= -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          <div class="line-1">
+            华夏衣冠, <i class="fas fa-butterfly"></i>
+          </div>
+          <div>百族风华</div>
+        </h1>
+        <p class="hero-subtitle">民族服饰数字衣帽间</p>
+
+        <!-- 【跳转链接 7】主视觉大按钮“开始换装” -->
+        <a href="./装饰/outfit.html" target="_blank" class="btn-primary">
+          开始换装 <i class="fas fa-arrow-right" style="font-size: 12px;"></i>
+        </a>
+      </div>
+
+      <!-- 音乐播放器 (此处理论上不跳转，触发的是内部JS，如果是单独的音乐页面，可给播放按钮加onclick跳转) -->
+      <!-- 音乐播放器 -->
+      <div class="music-player">
+        <!-- 👇 这里加了 id="vinyl" -->
+        <div class="vinyl-record is-paused" id="vinyl"></div>
+        <div class="music-info">
+          <span class="music-title">苗岭月夜</span>
+          <span class="music-artist">民族音乐</span>
+        </div>
+        <div class="music-controls">
+          <!-- 上一首/下一首如果不要可以删掉，这里先保留 -->
+          <i class="fas fa-step-backward"></i>
+
+          <!-- 👇 播放按钮，去掉了原来的 onclick 直接在 JS 里绑定 -->
+          <div class="play-btn" id="playBtn">
+            <i class="fas fa-play" style="margin-left: 2px;"></i>
+          </div>
+          <i class="fas fa-step-forward"></i>
+        </div>
+
+        <!-- 👇 新增：真实播放音频的标签，loop 表示单曲循环。请确保你的文件叫 bgm.mp3 -->
+        <audio id="bgmAudio" src="./首页/bgm.mp3" loop></audio>
+      </div>
+    </section>
+
+    <!-- ================= 底部功能卡片区域 ================= -->
+    <!-- ================= 底部功能卡片区域 ================= -->
+    <section class="features-section">
+
+      <!-- 【跳转链接 8】底部卡片-换装 -->
+      <a href="装饰/outfit.html" target="_blank" class="feature-card card-1">
+        <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="card-content">
+          <h3 class="card-title">华美换装</h3>
+          <p class="card-desc">+——————搭配你的民族服饰</p>
+        </div>
+      </a>
+
+      <!-- 【跳转链接 9】底部卡片-明信片 -->
+      <a href="./明信片/mxp2.html" target="_blank" class="feature-card card-2">
+        <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="card-content">
+          <h3 class="card-title">纸情传递</h3>
+          <p class="card-desc">+——————书写民族情怀</p>
+        </div>
+      </a>
+
+      <!-- 【跳转链接 10】底部卡片-知识云 -->
+      <a href="./知识云/index-m.html" target="_blank" class="feature-card card-3">
+        <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="card-content">
+          <h3 class="card-title">星海民族</h3>
+          <p class="card-desc">+——————探索服饰里的故事</p>
+        </div>
+      </a>
+
+      <!-- 你有第4个卡片的话继续按这个格式改 -->
+      <a href="./装饰/record.html" target="_blank" class="feature-card card-4">
+        <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="card-content">
+          <h3 class="card-title">我的装扮</h3>
+          <p class="card-desc">+——————收藏每一次灵感</p>
+        </div>
+      </a>
+
+    </section>
+  </div>
+
+  <script>
+    const audio = document.getElementById('bgmAudio');
+    const playBtn = document.getElementById('playBtn');
+    const playIcon = playBtn.querySelector('i');
+    const vinyl = document.getElementById('vinyl');
+
+    // 播放/暂停切换逻辑
+    playBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        // 如果当前是暂停的，尝试播放
+        audio.play().catch(err => {
+          console.log("播放失败，请检查音乐文件路径是否正确。", err);
+          alert("找不到音乐文件，请确保 bgm.mp3 和 index.html 在同一个文件夹！");
+        });
+      } else {
+        // 如果正在播放，则暂停
+        audio.pause();
+      }
+    });
+
+    // 当音频真正开始播放时（触发了 play 事件）
+    audio.addEventListener('play', () => {
+      // 图标变成暂停 ⏸
+      playIcon.classList.remove('fa-play');
+      playIcon.classList.add('fa-pause');
+      playIcon.style.marginLeft = '0';
+      // 唱片开始转动
+      vinyl.classList.remove('is-paused');
+    });
+
+    // 当音频暂停时（触发了 pause 事件）
+    audio.addEventListener('pause', () => {
+      // 图标变成播放 ▶
+      playIcon.classList.remove('fa-pause');
+      playIcon.classList.add('fa-play');
+      playIcon.style.marginLeft = '2px';
+      // 唱片停止转动
+      vinyl.classList.add('is-paused');
+    });
+  </script>
+
+</body>
+
+</html>
+
+</html>
