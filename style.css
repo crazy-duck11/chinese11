@@ -1,0 +1,2210 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --paper: #f6f0e5;
+  --paper-deep: #eee3d0;
+  --card: #fffaf1;
+  --ink: #403126;
+  --muted: #958575;
+  --gold: #b38a4d;
+  --gold-light: #d9bd87;
+  --line: #e7d9c3;
+  --red: #8d4438;
+  --green: #68745a;
+  --shadow: 0 12px 35px rgba(79, 53, 31, .06);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+}
+body {
+  margin: 0;
+  color: var(--ink);
+
+  /* 网页背景底色 */
+  background-color: #f5efe3;
+
+  /* 民族风景背景 + 浅米色蒙版 */
+  background-image:
+    linear-gradient(
+      rgba(248, 243, 233, 0.20),
+      rgba(248, 243, 233, 0.20)
+    ),
+    var(--ethnic-background, none);
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  font-family: "Noto Serif SC", "Songti SC", serif;
+}
+
+button, input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.topbar {
+  min-height: 82px;
+  padding: 0 5.5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  border-bottom: 1px solid rgba(179, 138, 77, .23);
+  background: rgba(255, 250, 241, .76);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  color: #fff8ec;
+  background: var(--red);
+  font-size: 23px;
+  border-radius: 2px;
+  box-shadow: 3px 3px 0 var(--gold-light);
+}
+
+.brand strong,
+.brand small {
+  display: block;
+}
+
+.brand strong {
+  font-size: 20px;
+  letter-spacing: 3px;
+}
+
+.brand small {
+  margin-top: 3px;
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 9px;
+  letter-spacing: 1.4px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 3vw, 42px);
+}
+
+.nav-link {
+  position: relative;
+  padding: 30px 0 27px;
+  color: #786858;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 19px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  transition: width .25s;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+.nav-link.active {
+  color: var(--red);
+}
+
+.outline-button,
+.primary-button {
+  min-height: 40px;
+  padding: 0 20px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--gold);
+  font-size: 12px;
+  transition: .2s ease;
+}
+
+.outline-button {
+  color: var(--ink);
+  background: transparent;
+}
+
+.outline-button:hover {
+  color: var(--red);
+  background: #f3e8d5;
+}
+
+.primary-button {
+  color: #fff9ee;
+  background: var(--red);
+  border-color: var(--red);
+}
+
+.primary-button:hover {
+  background: #71352d;
+  transform: translateY(-1px);
+}
+
+.hero {
+  min-height: 250px;
+  padding: 42px 9% 38px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  border-bottom: 1px solid rgba(179, 138, 77, .2);
+}
+
+.hero::before {
+  content: "衣";
+  position: absolute;
+  right: 22%;
+  top: -70px;
+  color: rgba(179, 138, 77, .055);
+  font-size: 320px;
+  font-weight: 800;
+  pointer-events: none;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 1;
+}
+
+.eyebrow,
+.mini-label {
+  color: var(--gold);
+  font-family: Arial, sans-serif;
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+
+.hero h1 {
+  margin: 14px 0 12px;
+  font-size: clamp(30px, 3.2vw, 43px);
+  line-height: 1.45;
+  letter-spacing: 3px;
+  font-weight: 600;
+}
+
+.hero h1 em {
+  color: var(--red);
+  font-style: normal;
+}
+
+.hero-copy p {
+  max-width: 430px;
+  color: #847565;
+  font-size: 12px;
+  line-height: 2;
+}
+
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 10px;
+  padding-bottom: 5px;
+  color: var(--red);
+  font-size: 12px;
+  border-bottom: 1px solid var(--gold-light);
+}
+
+.hero-decoration {
+  width: 180px;
+  height: 180px;
+  margin-right: 6%;
+  position: relative;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(179, 138, 77, .45);
+  border-radius: 50%;
+}
+
+.hero-decoration::before,
+.hero-decoration::after {
+  content: "";
+  position: absolute;
+  border: 1px solid rgba(179, 138, 77, .3);
+  border-radius: 50%;
+}
+
+.hero-decoration::before {
+  inset: 10px;
+}
+
+.hero-decoration::after {
+  inset: 21px;
+  border-style: dashed;
+}
+
+.seal {
+  z-index: 1;
+  color: var(--red);
+  font-size: 65px;
+}
+
+.hero-line {
+  position: absolute;
+  width: 225px;
+  height: 1px;
+  background: var(--gold-light);
+  transform: rotate(-45deg);
+}
+
+.hero-caption {
+  position: absolute;
+  bottom: -20px;
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 3px;
+  white-space: nowrap;
+}
+
+.studio-layout {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 34px 4.5% 48px;
+  display: grid;
+  grid-template-columns: minmax(190px, .76fr) minmax(300px, 1.35fr) minmax(280px, 1.05fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.panel {
+  min-width: 0;
+  background: rgba(255, 250, 241, .88);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.ethnic-sidebar,
+.wardrobe-panel {
+  padding: 23px 19px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-number {
+  color: var(--gold);
+  font-family: Georgia, serif;
+  font-size: 27px;
+  font-style: italic;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.section-heading p {
+  margin: 5px 0 0;
+  color: #a29382;
+  font-family: Arial, sans-serif;
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+
+.ethnic-list {
+  display: grid;
+  gap: 9px;
+  margin-top: 28px;
+}
+
+.ethnic-option {
+  width: 100%;
+  min-height: 69px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid transparent;
+  transition: .2s;
+}
+
+.ethnic-option:hover {
+  background: #f7efdf;
+}
+
+.ethnic-option.active {
+  background: #f4ead8;
+  border-color: #d6bd92;
+}
+
+.ethnic-symbol {
+  width: 39px;
+  height: 39px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  color: var(--red);
+  background: #ead9bd;
+  font-size: 19px;
+}
+
+.ethnic-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.ethnic-info strong,
+.ethnic-info small {
+  display: block;
+}
+
+.ethnic-info strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.ethnic-info small {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.option-arrow {
+  color: var(--gold);
+  font-size: 14px;
+  opacity: 0;
+  transition: .2s;
+}
+
+.ethnic-option.active .option-arrow,
+.ethnic-option:hover .option-arrow {
+  opacity: 1;
+}
+
+.sidebar-note {
+  margin-top: 32px;
+  padding: 15px 12px;
+  display: flex;
+  gap: 9px;
+  background: #f3ebdd;
+  border-left: 2px solid var(--gold);
+}
+
+.note-icon {
+  color: var(--gold);
+}
+
+.sidebar-note p {
+  margin: 0;
+  color: #877663;
+  font-size: 10px;
+  line-height: 1.9;
+}
+
+.character-panel {
+  padding: 22px 20px 18px;
+  background: transparent;
+}
+
+
+
+.character-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.character-topline h2 {
+  margin: 8px 0 0;
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+.collection-tag {
+  padding: 7px 10px;
+  color: var(--gold);
+  border: 1px solid var(--line);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.character-stage {
+  min-height: 410px;
+  height: clamp(410px, 43vw, 530px);
+  margin-top: 18px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+background:
+  radial-gradient(
+    ellipse at 50% 42%,
+    rgba(255, 255, 255, 0.35),
+    transparent 55%
+  ),
+  linear-gradient(
+    150deg,
+    rgba(255, 254, 250, 0.55),
+    rgba(252, 250, 245, 0.45)
+  );
+
+
+  border: 1px solid #ebddc5;
+}
+
+.character-stage::before {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 1px solid rgba(179, 138, 77, .25);
+  pointer-events: none;
+}
+
+.stage-circle {
+  position: absolute;
+  border: 1px solid rgba(179, 138, 77, .27);
+  border-radius: 50%;
+}
+
+.circle-one {
+  width: 270px;
+  height: 270px;
+}
+
+.circle-two {
+  width: 320px;
+  height: 320px;
+  border-style: dashed;
+  opacity: .7;
+}
+
+.stage-decoration {
+  position: absolute;
+  color: rgba(179, 138, 77, .6);
+  font-size: 28px;
+}
+
+.decoration-left {
+  left: 12%;
+  top: 21%;
+}
+
+.decoration-right {
+  right: 12%;
+  top: 37%;
+}
+
+.character-placeholder {
+  width: 210px;
+  height: 360px;
+  position: relative;
+  z-index: 1;
+  transform: scale(.94);
+  transform-origin: center center;
+  filter: drop-shadow(0 12px 9px rgba(91, 59, 37, .12));
+}
+
+.character-halo {
+  position: absolute;
+  z-index: -1;
+  left: 15px;
+  top: 10px;
+  width: 180px;
+  height: 180px;
+  border: 1px solid rgba(179, 138, 77, .4);
+  border-radius: 50%;
+}
+
+.character-head {
+  position: absolute;
+  left: 74px;
+  top: 26px;
+  width: 64px;
+  height: 78px;
+  z-index: 4;
+}
+
+.face {
+  position: absolute;
+  inset: 9px 7px 0;
+  background: #e7bfa0;
+  border-radius: 44% 44% 45% 45%;
+  border: 1px solid rgba(111, 64, 42, .2);
+}
+
+.hair {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 64px;
+  height: 47px;
+  z-index: 2;
+  background: #33231e;
+  border-radius: 48% 48% 22% 22%;
+}
+
+.hair::after {
+  content: "";
+  position: absolute;
+  top: 22px;
+  left: 27px;
+  width: 10px;
+  height: 31px;
+  background: #33231e;
+}
+
+.hair-side {
+  position: absolute;
+  z-index: 3;
+  top: 31px;
+  width: 14px;
+  height: 49px;
+  background: #33231e;
+  border-radius: 9px;
+}
+
+.hair-left {
+  left: 1px;
+}
+
+.hair-right {
+  right: 1px;
+}
+
+.eye {
+  position: absolute;
+  top: 32px;
+  width: 4px;
+  height: 3px;
+  background: #493027;
+  border-radius: 50%;
+}
+
+.eye-left {
+  left: 11px;
+}
+
+.eye-right {
+  right: 11px;
+}
+
+.mouth {
+  position: absolute;
+  left: 22px;
+  top: 45px;
+  width: 9px;
+  height: 4px;
+  border-bottom: 1px solid #a85f56;
+  border-radius: 50%;
+}
+
+.character-neck {
+  position: absolute;
+  z-index: 3;
+  top: 91px;
+  left: 94px;
+  width: 24px;
+  height: 29px;
+  background: #e7bfa0;
+}
+
+.character-body {
+  position: absolute;
+  top: 108px;
+  left: 42px;
+  width: 126px;
+  height: 135px;
+  z-index: 2;
+  background: #8c3d35;
+  clip-path: polygon(30% 0, 70% 0, 100% 18%, 88% 100%, 12% 100%, 0 18%);
+}
+
+.collar {
+  position: absolute;
+  left: 39px;
+  top: 0;
+  width: 49px;
+  height: 45px;
+  background: #e9d4a9;
+  clip-path: polygon(0 0, 50% 70%, 100% 0, 75% 100%, 50% 80%, 25% 100%);
+}
+
+.body-pattern {
+  position: absolute;
+  left: 50%;
+  top: 50px;
+  transform: translateX(-50%);
+  color: #dfc08a;
+  font-size: 29px;
+}
+
+.body-belt {
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  width: 100%;
+  height: 9px;
+  background: #d3ae69;
+}
+
+.character-skirt {
+  position: absolute;
+  top: 222px;
+  left: 20px;
+  width: 170px;
+  height: 113px;
+  z-index: 2;
+  background: repeating-linear-gradient(
+    0deg,
+    #493a5b 0,
+    #493a5b 10px,
+    #a84f42 10px,
+    #a84f42 15px,
+    #d6b879 15px,
+    #d6b879 19px
+  );
+  clip-path: polygon(24% 0, 76% 0, 100% 100%, 0 100%);
+  border-bottom: 5px solid #d5b16f;
+}
+
+.character-shoes {
+  position: absolute;
+  bottom: 14px;
+  left: 61px;
+  width: 90px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.character-shoes span {
+  width: 35px;
+  height: 15px;
+  background: #493027;
+  border-radius: 70% 30% 20% 20%;
+}
+
+.character-image {
+  position: relative;
+  z-index: 2;
+  max-width: 92%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+
+.stage-caption {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  bottom: 14px;
+  text-align: center;
+}
+
+.stage-caption span,
+.stage-caption strong {
+  display: block;
+}
+
+.stage-caption span {
+  color: #a28c6c;
+  font-family: Arial, sans-serif;
+  font-size: 7px;
+  letter-spacing: 1.4px;
+}
+
+.stage-caption strong {
+  margin-top: 5px;
+  color: #76543a;
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.character-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-top: 18px;
+}
+
+.current-look {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.look-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--green);
+  border-radius: 50%;
+}
+
+.current-look strong {
+  color: var(--ink);
+  font-size: 11px;
+}
+
+.character-footer .primary-button {
+  padding: 0 13px;
+}
+
+.wardrobe-panel {
+  display: flex;
+  flex-direction: column;
+}
+.category-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* 改为3列 */
+  gap: 4px;
+  margin-top: 25px;
+  padding: 4px;
+  background: #f2e8d8;
+}
+
+.category-tab {
+  min-width: 0;
+  padding: 10px 2px;
+  color: #897765;
+  background: transparent;
+  border: 0;
+  font-size: 11px;
+  transition: .2s;
+}
+
+.category-tab.active {
+  color: var(--red);
+  background: var(--card);
+  box-shadow: 0 2px 7px rgba(79, 53, 31, .08);
+}
+
+.wardrobe-intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0 12px;
+  font-size: 12px;
+}
+
+.wardrobe-intro span:last-child {
+  color: #a99a88;
+  font-family: Arial, sans-serif;
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.item-card {
+  min-width: 0;
+  padding: 8px;
+  position: relative;
+  text-align: left;
+  color: var(--ink);
+  background: #fbf5e9;
+  border: 1px solid #eee2ce;
+  transition: .2s;
+}
+
+.item-card:hover {
+  border-color: var(--gold-light);
+  transform: translateY(-2px);
+}
+
+.item-card.selected {
+  border: 1px solid var(--red);
+  background: #f6eadb;
+}
+
+.item-art {
+  height: 86px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  background: linear-gradient(145deg, #f2e5cf, #e9d8bb);
+}
+
+.item-art::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(179, 138, 77, .23);
+}
+
+.item-emoji {
+  position: relative;
+  z-index: 1;
+  font-size: 36px;
+  filter: drop-shadow(0 3px 2px rgba(79, 53, 31, .1));
+}
+
+.item-check {
+  width: 17px;
+  height: 17px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  color: white;
+  background: var(--red);
+  border-radius: 50%;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  opacity: 0;
+}
+
+.item-card.selected .item-check {
+  opacity: 1;
+}
+
+.item-name {
+  display: block;
+  margin-top: 10px;
+  overflow: hidden;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-desc {
+  display: block;
+  margin-top: 5px;
+  color: #9a8875;
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+.selection-summary {
+  margin-top: auto;
+  padding-top: 21px;
+}
+
+.summary-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+}
+
+.clear-button {
+  padding: 3px 0;
+  color: #a18a72;
+  background: transparent;
+  border: 0;
+  font-size: 10px;
+}
+
+.clear-button:hover {
+  color: var(--red);
+}
+
+.summary-items {
+  min-height: 43px;
+  margin-top: 11px;
+  display: flex;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.summary-chip {
+  padding: 6px 8px;
+  color: #80664b;
+  background: #f1e6d4;
+  font-size: 10px;
+}
+
+.empty-summary {
+  color: #b0a18e;
+  font-size: 10px;
+  line-height: 2;
+}
+
+.culture-section,
+.saved-section {
+  max-width: 1350px;
+  margin: 0 auto;
+  padding: 10px 5% 55px;
+}
+
+.culture-heading {
+  margin-bottom: 20px;
+}
+
+.culture-card {
+  min-height: 165px;
+  padding: 28px 34px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  background: #eee2cf;
+  border: 1px solid #e3d2b7;
+  position: relative;
+  overflow: hidden;
+}
+
+.culture-symbol {
+  width: 95px;
+  height: 95px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  color: var(--red);
+  border: 1px solid var(--gold);
+  outline: 1px solid rgba(179, 138, 77, .35);
+  outline-offset: 5px;
+  font-size: 48px;
+}
+
+.culture-copy {
+  max-width: 700px;
+  position: relative;
+  z-index: 1;
+}
+
+.culture-copy h3 {
+  margin: 8px 0;
+  font-size: 19px;
+  letter-spacing: 1px;
+}
+
+.culture-copy p {
+  margin: 0;
+  color: #857360;
+  font-size: 12px;
+  line-height: 2;
+}
+
+.culture-side {
+  margin-left: auto;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  color: #a68b64;
+  font-size: 10px;
+  letter-spacing: 3px;
+  writing-mode: vertical-rl;
+}
+
+.culture-flower {
+  font-size: 29px;
+  writing-mode: horizontal-tb;
+}
+
+.saved-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.saved-count {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.saved-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.saved-empty {
+  grid-column: 1 / -1;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #d8c6a9;
+  color: #a18c72;
+}
+
+.saved-empty > span {
+  color: var(--gold);
+  font-size: 30px;
+}
+
+.saved-empty p {
+  margin: 8px 0 4px;
+  font-size: 13px;
+}
+
+.saved-empty small {
+  font-size: 10px;
+}
+
+.saved-card {
+  min-width: 0;
+  padding: 16px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.saved-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.saved-ethnic {
+  padding: 5px 8px;
+  color: var(--red);
+  background: #f1e2cf;
+  font-size: 10px;
+}
+
+.saved-date {
+  color: #a79682;
+  font-family: Arial, sans-serif;
+  font-size: 9px;
+}
+
+.saved-card h3 {
+  margin: 14px 0 7px;
+  font-size: 16px;
+}
+
+.saved-card p {
+  color: #9a8875;
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+.saved-card-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 12px 0;
+}
+
+.saved-card-items span {
+  padding: 5px 7px;
+  background: #f3eadb;
+  color: #866d51;
+  font-size: 9px;
+}
+
+.saved-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.saved-card-actions button {
+  flex: 1;
+  padding: 8px 5px;
+  color: var(--red);
+  background: transparent;
+  border: 1px solid var(--line);
+  font-size: 10px;
+}
+
+.saved-card-actions button:hover {
+  background: #f5ead9;
+}
+
+.footer {
+  min-height: 75px;
+  padding: 18px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  border-top: 1px solid var(--line);
+  color: #96836d;
+}
+
+.footer-brand {
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.footer-brand span {
+  color: var(--gold);
+}
+
+.footer p {
+  font-size: 10px;
+}
+
+.toast {
+  position: fixed;
+  z-index: 100;
+  left: 50%;
+  bottom: 28px;
+  max-width: calc(100vw - 32px);
+  padding: 12px 22px;
+  color: #fff8ec;
+  background: #49352a;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, .15);
+  font-size: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 12px);
+  transition: .25s;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.modal-backdrop {
+  position: fixed;
+  z-index: 90;
+  inset: 0;
+  padding: 20px;
+  display: grid;
+  place-items: center;
+  background: rgba(43, 31, 23, .55);
+  backdrop-filter: blur(4px);
+}
+
+.modal-backdrop[hidden] {
+  display: none;
+}
+
+.look-modal {
+  width: min(700px, 100%);
+  max-height: 90vh;
+  position: relative;
+  display: grid;
+  grid-template-columns: .8fr 1.2fr;
+  overflow: auto;
+  background: var(--card);
+  box-shadow: 0 20px 80px rgba(0, 0, 0, .2);
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  font-size: 26px;
+}
+
+.modal-art {
+  min-height: 430px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: linear-gradient(145deg, #f0e2ca, #e2cba5);
+}
+
+.modal-art::before,
+.modal-art::after {
+  content: "";
+  position: absolute;
+  width: 230px;
+  height: 230px;
+  border: 1px solid rgba(179, 138, 77, .5);
+  border-radius: 50%;
+}
+
+.modal-art::after {
+  width: 190px;
+  height: 190px;
+  border-style: dashed;
+}
+
+.modal-seal {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  color: var(--red);
+  font-size: 25px;
+}
+
+.modal-figure {
+  color: var(--red);
+  font-size: 90px;
+}
+
+.modal-art-caption {
+  position: absolute;
+  bottom: 18px;
+  color: #947958;
+  font-family: Arial, sans-serif;
+  font-size: 8px;
+  letter-spacing: 2px;
+}
+
+.modal-content {
+  padding: 45px 30px 30px;
+}
+
+.modal-content h2 {
+  margin: 9px 0;
+  font-size: 23px;
+}
+
+.modal-date {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.modal-divider {
+  height: 1px;
+  margin: 20px 0;
+  background: var(--line);
+}
+
+.modal-content h3 {
+  font-size: 13px;
+}
+
+.modal-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 12px 0 20px;
+}
+
+.modal-items span {
+  padding: 7px 9px;
+  color: #80664b;
+  background: #f1e6d4;
+  font-size: 10px;
+}
+
+.field-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #897765;
+  font-size: 11px;
+}
+
+.look-name-input {
+  width: 100%;
+  padding: 11px;
+  color: var(--ink);
+  background: #fffdf8;
+  border: 1px solid var(--line);
+  font-size: 12px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 9px;
+  margin-top: 18px;
+}
+
+.modal-actions button {
+  flex: 1;
+}
+
+@media (min-width: 1500px) {
+  .studio-layout {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 1100px) {
+  .studio-layout {
+    grid-template-columns: 190px minmax(300px, 1fr);
+  }
+
+  .wardrobe-panel {
+    grid-column: 1 / -1;
+  }
+
+  .item-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .item-art {
+    height: 100px;
+  }
+
+  .selection-summary {
+    margin-top: 22px;
+  }
+}
+
+@media (max-width: 700px) {
+  .topbar {
+    padding: 14px 5%;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .nav {
+    order: 3;
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .nav-link {
+    padding: 10px 0;
+    font-size: 11px;
+  }
+
+  .nav-link::after {
+    bottom: 4px;
+  }
+
+  .brand strong {
+    font-size: 17px;
+  }
+
+  .hero {
+    min-height: 230px;
+    padding: 35px 7%;
+  }
+
+  .hero-decoration {
+    width: 95px;
+    height: 95px;
+    margin-right: 0;
+    flex-shrink: 0;
+  }
+
+  .hero-decoration::before {
+    inset: 6px;
+  }
+
+  .hero-decoration::after {
+    inset: 12px;
+  }
+
+  .hero-decoration .seal {
+    font-size: 36px;
+  }
+
+  .hero-caption {
+    font-size: 8px;
+    letter-spacing: 1px;
+  }
+
+  .hero::before {
+    right: 8%;
+    font-size: 200px;
+  }
+
+  .studio-layout {
+    padding: 22px 4% 35px;
+    grid-template-columns: 1fr;
+  }
+
+  .ethnic-sidebar,
+  .wardrobe-panel {
+    padding: 20px 16px;
+  }
+
+  .ethnic-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    margin-top: 18px;
+  }
+
+  .ethnic-option {
+    min-height: 61px;
+    gap: 7px;
+    padding: 7px;
+  }
+
+  .ethnic-symbol {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .ethnic-info strong {
+    font-size: 11px;
+  }
+
+  .ethnic-info small {
+    font-size: 9px;
+  }
+
+  .sidebar-note {
+    margin-top: 16px;
+  }
+
+  .character-stage {
+    height: 430px;
+  }
+
+  .item-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .item-art {
+    height: 105px;
+  }
+
+  .culture-section,
+  .saved-section {
+    padding: 5px 4% 38px;
+  }
+
+  .culture-card {
+    padding: 22px 18px;
+    align-items: flex-start;
+    gap: 17px;
+  }
+
+  .culture-symbol {
+    width: 56px;
+    height: 56px;
+    font-size: 28px;
+  }
+
+  .culture-copy h3 {
+    font-size: 15px;
+  }
+
+  .culture-copy p {
+    font-size: 11px;
+  }
+
+  .culture-side {
+    display: none;
+  }
+
+  .saved-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .look-modal {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+  }
+
+  .modal-art {
+    min-height: 130px;
+  }
+
+  .modal-art::before {
+    width: 110px;
+    height: 110px;
+  }
+
+  .modal-art::after {
+    width: 90px;
+    height: 90px;
+  }
+
+  .modal-figure {
+    font-size: 45px;
+  }
+
+  .modal-content {
+    padding: 22px;
+  }
+}
+
+/* 固定立绘：保留原有展示框和页面布局 */
+#characterStage #characterImage
+ {
+  position: 
+absolute
+;
+  height: 
+96%
+;
+  width: 
+auto
+;
+  max-width: 
+85%
+;
+  object-fit: 
+contain
+;
+  object-position: 
+center bottom
+;
+  left: 
+50%
+;
+  bottom: 
+10%
+;
+  transform: 
+translateX(-50%
+);
+  z-index: 
+2
+;
+}
+.item-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.item-art {
+  position: relative;
+  overflow: hidden;
+}
+
+.item-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  position: absolute;
+  inset: 0;
+}
+
+/* 服饰图层 */
+.outfit-layers {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* 鞋子：第一类服饰图层 */
+.outfit-layers img[data-category="鞋子"] {
+  z-index: 2;
+}
+
+/* 服装：第二类服饰图层 */
+.outfit-layers img[data-category="服装"] {
+  z-index: 3;
+}
+
+/* 头饰：第三类服饰图层 */
+.outfit-layers img[data-category="头饰"] {
+  z-index: 4;
+}
+ /* 所有民族服饰的默认位置 */
+.outfit-layers img {
+  position: absolute;
+  height: 96%;
+  width: auto;
+  max-width: 85%;
+  object-fit: contain;
+  object-position: center bottom;
+  left: 50%;
+  bottom: 10%;
+  transform: translateX(-50%);
+}
+/* =========================
+   苗族第1件：苗绣盛装
+   ========================= */
+.outfit-layers img[data-ethnic="苗族"][data-item-id="miao-cloth-1"] {
+  height: 89%;
+  max-width: 89%;
+  left: 49.5%;
+  bottom: 9.8%;
+  transform: translateX(-50%);
+}
+
+/* =========================
+   苗族第2件：蓝染衣裙
+   ========================= */
+.outfit-layers img[data-ethnic="苗族"][data-item-id="miao-cloth-2"] {
+  height: 94%;
+  max-width: 93%;
+  left: 49.2%;
+  bottom: 11.5%;
+  transform: translateX(-50%);
+}
+
+/* =========================
+   苗族第3件：织锦上衣
+   ========================= */
+.outfit-layers img[data-ethnic="苗族"][data-item-id="miao-cloth-3"] {
+  height: 90%;
+  max-width: 90%;
+  left: 49.7%;
+  bottom: 11.4%;
+  transform: translateX(-50%);
+}
+
+/* =========================
+   苗族第4件：百褶长裙
+   ========================= */
+.outfit-layers img[data-ethnic="苗族"][data-item-id="miao-cloth-4"] {
+  height: 89%;
+  max-width: 85%;
+  left: 49.8%;
+  bottom: 9.1%;
+  transform: translateX(-50%);
+}
+/* =========================
+   藏族第1件衣服
+   ========================= */
+.outfit-layers img[data-ethnic="藏族"][data-item-id="zang-cloth-1"] {
+  height: 69%;
+  max-width: 89%;
+  left: 49.6%;
+  bottom: 18.3%;
+  transform: translateX(-50%);
+}
+
+/* =========================
+   藏族第2件衣服
+   ========================= */
+.outfit-layers img[data-ethnic="藏族"][data-item-id="zang-cloth-2"] {
+  height: 69%;
+  max-width: 89%;
+  left: 49.7%;
+  bottom: 17.5%;
+  transform: translateX(-50%);
+}
+
+/* =========================
+   藏族第3件衣服
+   ========================= */
+.outfit-layers img[data-ethnic="藏族"][data-item-id="zang-cloth-3"] {
+  height: 70%;
+  max-width: 85%;
+  left: 49.6%;
+  bottom: 16.9%;
+  transform: translateX(-50%);
+}
+
+/* =========================
+   藏族第4件衣服
+   ========================= */
+.outfit-layers img[data-ethnic="藏族"][data-item-id="zang-cloth-4"] {
+  height: 67%;
+  max-width: 89%;
+  left: 49.4%;
+  bottom: 19.4%;
+  transform: translateX(-50%);
+}
+/* =========================================
+   蒙古族：四件衣服分别调试
+   可独立修改 height、left、bottom
+   ========================================= */
+
+/* 蒙古族第1件：节庆裙装 */
+.outfit-layers img[data-ethnic="蒙古族"][data-item-id="meng-cloth-1"] {
+  height:65%;
+  max-width:50%;
+  left: 49.4%;
+  bottom:21%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* 蒙古族第2件：纹饰礼服 */
+.outfit-layers img[data-ethnic="蒙古族"][data-item-id="meng-cloth-2"] {
+  height:70%;
+  max-width: 85%;
+  left: 49.6%;
+  bottom:17%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* 蒙古族第3件：蒙古坎肩 */
+.outfit-layers img[data-ethnic="蒙古族"][data-item-id="meng-cloth-3"] {
+  height:65%;
+  max-width: 85%;
+  left:49.4%;
+  bottom: 21.5%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* 蒙古族第4件：蒙古族长袍 */
+.outfit-layers img[data-ethnic="蒙古族"][data-item-id="meng-cloth-4"] {
+  height:65%;
+  max-width: 85%;
+  left: 49.5%;
+  bottom: 22%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+
+/* =========================================
+   维吾尔族：四件衣服分别调试
+   可独立修改 height、left、bottom
+   ========================================= */
+
+/* 维吾尔族第1件：艾德莱斯裙 */
+.outfit-layers img[data-ethnic="维吾尔族"][data-item-id="wei-cloth-1"] {
+  height: 78%;
+  max-width: 89%;
+  left: 49.3%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* 维吾尔族第2件：刺绣长裙 */
+.outfit-layers img[data-ethnic="维吾尔族"][data-item-id="wei-cloth-2"] {
+  height: 82%;
+  max-width: 85%;
+  left: 49.8%;
+  bottom: 10%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* 维吾尔族第3件：传统长袍 */
+.outfit-layers img[data-ethnic="维吾尔族"][data-item-id="wei-cloth-3"] {
+  height: 80%;
+  max-width: 85%;
+  left: 49.4%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* 维吾尔族第4件：绣花上衣 */
+.outfit-layers img[data-ethnic="维吾尔族"][data-item-id="wei-cloth-4"] {
+  height: 64%;
+  max-width: 85%;
+  left: 49.6%;
+  bottom: 21.5%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* ===== 苗族鞋子独立定位 ===== */
+
+.outfit-layers img[data-ethnic="苗族"][data-item-id="miao-shoes-1"] {
+  height:8%;
+  max-width: 30%;
+  left: 49.2%;
+  bottom: 10%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.outfit-layers img[data-ethnic="苗族"][data-item-id="miao-shoes-2"] {
+  height: 17%;
+  max-width: 30%;
+  left: 49.4%;
+  bottom: 10%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.outfit-layers img[data-ethnic="苗族"][data-item-id="miao-shoes-3"] {
+  height: 11%;
+  max-width: 30%;
+  left: 49.3%;
+  bottom: 10%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.outfit-layers img[data-ethnic="苗族"][data-item-id="miao-shoes-4"] {
+  height: 8%;
+  max-width: 30%;
+  left: 49.3%;
+  bottom: 10%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* ===== 藏族鞋子独立定位 ===== */
+
+.outfit-layers img[data-ethnic="藏族"][data-item-id="zang-shoes-1"] {
+  height: 99%;
+  max-width:49%;
+  left: 50.3%;
+  bottom: 8.5%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.outfit-layers img[data-ethnic="藏族"][data-item-id="zang-shoes-2"] {
+  height: 92%;
+  max-width:49%;
+  left: 50.2%;
+  bottom: 8.5%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.outfit-layers img[data-ethnic="藏族"][data-item-id="zang-shoes-3"] {
+  height: 99%;
+  max-width:32%;
+  left: 50.8%;
+  bottom: 9.2%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.outfit-layers img[data-ethnic="藏族"][data-item-id="zang-shoes-4"] {
+  height:85%;
+  max-width: 25%;
+  left: 48.8%;
+  bottom: 9/8%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* ===== 蒙古族鞋子独立定位 ===== */
+
+.outfit-layers img[data-ethnic="蒙古族"][data-item-id="meng-shoes-1"] {
+  height:9%;
+  max-width:28%;
+  left: 49.3%;
+  bottom: 10.8%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.outfit-layers img[data-ethnic="蒙古族"][data-item-id="meng-shoes-2"] {
+  height:11%;
+  max-width: 30%;
+  left: 49.3%;
+  bottom: 10.6%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.outfit-layers img[data-ethnic="蒙古族"][data-item-id="meng-shoes-3"] {
+  height:99%;
+  max-width:39%;
+  left: 49%;
+  bottom: 10%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.outfit-layers img[data-ethnic="蒙古族"][data-item-id="meng-shoes-4"] {
+  height: 99%;
+  max-width: 40%;
+  left: 50%;
+  bottom: 9%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* ===== 维吾尔族鞋子独立定位 ===== */
+
+/* 第1双鞋 */
+.outfit-layers img[data-ethnic="维吾尔族"][data-item-id="wei-shoes-1"] {
+  height: 99%;
+  max-width: 31%;
+  left: 49.3%;
+  bottom: 8%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* 第2双鞋 */
+.outfit-layers img[data-ethnic="维吾尔族"][data-item-id="wei-shoes-2"] {
+  height: 99%;
+  max-width:30%;
+  left: 49.5%;
+  bottom: 8%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* 第3双鞋 */
+.outfit-layers img[data-ethnic="维吾尔族"][data-item-id="wei-shoes-3"] {
+  height:99%;
+  max-width:40%;
+  left: 49.5%;
+  bottom: 8%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* 第4双鞋 */
+.outfit-layers img[data-ethnic="维吾尔族"][data-item-id="wei-shoes-4"] {
+  height:99%;
+  max-width:35%;
+  left: 49.3%;
+  bottom: 8%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* ===== 苗族头饰独立定位 ===== */
+
+.outfit-layers img[data-ethnic="苗族"][data-item-id="miao-head-1"] {
+  height: 25%;
+  max-width: 29%;
+  left: 49.2%;
+  bottom: 78%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.outfit-layers img[data-ethnic="苗族"][data-item-id="miao-head-2"] {
+  height: 19%;
+  max-width: 30%;
+  left: 49%;
+  bottom: 80.5%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.outfit-layers img[data-ethnic="苗族"][data-item-id="miao-head-3"] {
+  height: 18%;
+  max-width: 30%;
+  left: 49%;
+  bottom: 82%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.outfit-layers img[data-ethnic="苗族"][data-item-id="miao-head-4"] {
+  height: 19%;
+  max-width: 30%;
+  left: 49.2%;
+  bottom: 80.5%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* ===== 藏族头饰独立定位 ===== */
+
+.outfit-layers img[data-ethnic="藏族"][data-item-id="zang-head-1"] {
+  height: 21%;
+  max-width: 30%;
+  left: 49.1%;
+  bottom: 83.5%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.outfit-layers img[data-ethnic="藏族"][data-item-id="zang-head-2"] {
+  height: 23%;
+  max-width: 30%;
+  left: 49.2%;
+  bottom: 83%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.outfit-layers img[data-ethnic="藏族"][data-item-id="zang-head-3"] {
+  height: 23%;
+  max-width: 30%;
+  left: 49.1%;
+  bottom: 82%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.outfit-layers img[data-ethnic="藏族"][data-item-id="zang-head-4"] {
+  height: 9.7%;
+  max-width: 30%;
+  left: 49%;
+  bottom: 89.7%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* ===== 蒙古族头饰独立定位 ===== */
+
+.outfit-layers img[data-ethnic="蒙古族"][data-item-id="meng-head-1"] {
+  height: 13%;
+  max-width: 30%;
+  left: 49%;
+  bottom: 85.6%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.outfit-layers img[data-ethnic="蒙古族"][data-item-id="meng-head-2"] {
+  height: 21%;
+  max-width: 30%;
+  left: 49.2%;
+  bottom: 80.9%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.outfit-layers img[data-ethnic="蒙古族"][data-item-id="meng-head-3"] {
+  height: 6.5%;
+  max-width: 30%;
+  left: 49.2%;
+  bottom: 95%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.outfit-layers img[data-ethnic="蒙古族"][data-item-id="meng-head-4"] {
+  height:23%;
+  max-width: 30%;
+  left: 49%;
+  bottom: 77%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* ===== 维吾尔族头饰独立定位 ===== */
+
+.outfit-layers img[data-ethnic="维吾尔族"][data-item-id="wei-head-1"] {
+  height:60%;
+  max-width:60%;
+  left: 49%;
+  bottom: 39%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.outfit-layers img[data-ethnic="维吾尔族"][data-item-id="wei-head-2"] {
+  height: 61%;
+  max-width: 30%;
+  left: 49%;
+  bottom: 40%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.outfit-layers img[data-ethnic="维吾尔族"][data-item-id="wei-head-3"] {
+  height: 53%;
+  max-width: 30%;
+  left: 49%;
+  bottom: 46%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.outfit-layers img[data-ethnic="维吾尔族"][data-item-id="wei-head-4"] {
+  height: 8%;
+  max-width: 30%;
+  left: 49.3%;
+  bottom: 91%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+}
+/* 造型卡截图预览 */
+.saved-card-preview {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  margin: 12px 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(235, 224, 205, 0.35);
+  border-radius: 8px;
+}
+
+/* 完整显示保存的搭配截图 */
+.saved-card-preview .saved-look-snapshot {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 旧造型卡的提示文字 */
+.saved-preview-placeholder {
+  padding: 16px;
+  color: #958575;
+  font-size: 13px;
+  text-align: center;
+}
